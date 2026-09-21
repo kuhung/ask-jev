@@ -69,6 +69,11 @@ export default function Home() {
       if (res.ok) {
         const json: JevDecisionResponse = await res.json();
         setVerdictData(json.data);
+      } else if (res.status === 429) {
+        const errJson = await res.json().catch(() => null);
+        const retrySec = errJson?.retryAfter || 5;
+        showToast(`老管家正忙：提问太频繁啦，请稍候 ${retrySec} 秒再试！`);
+        return;
       } else {
         throw new Error('API 调用失败');
       }
@@ -128,6 +133,11 @@ export default function Home() {
       if (res.ok) {
         const json: JevDecisionResponse = await res.json();
         setVerdictData(json.data);
+      } else if (res.status === 429) {
+        const errJson = await res.json().catch(() => null);
+        const retrySec = errJson?.retryAfter || 5;
+        showToast(`老管家正忙：提问太频繁啦，请稍候 ${retrySec} 秒再试！`);
+        return;
       } else {
         throw new Error('API 调用失败');
       }

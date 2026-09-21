@@ -77,12 +77,15 @@ ask-jev/
 │   └── types.ts                  # 全链路 TypeScript 严格类型契约
 ├── docs/
 │   ├── PRD.md                    # 需求架构方案与移动端规范
+│   ├── dev-reports/
+│   │   └── API_RATE_LIMIT_IMPLEMENTATION.md      # 接口防刷与访问频控实现交付报告
 │   ├── reviews/
 │   │   ├── UX_AND_EXPRESSION_REVIEW.md           # 表达体系、交互连贯性与表现形式深度审查
 │   │   └── LAYOUT_AND_INTERACTION_OPTIMIZATION.md # 布局重心、交互反馈与风格一致性优化报告
 │   └── test-reports/
 │       └── PROD_TEST_REPORT.md   # 生产环境详尽用例测试与评估报告
 ├── scripts/
+│   ├── test-rate-limit.mjs       # 接口防刷与双层滑动窗口频控测试脚本
 │   ├── run-production-tests.mjs  # 生产环境自动化测试套件
 │   └── run-deep-tests-curl.mjs   # 生产环境深度场景与边界探测脚本
 ├── index.html                    # 零依赖单页版 (同步支持移动端)

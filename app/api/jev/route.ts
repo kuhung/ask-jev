@@ -9,6 +9,7 @@ import {
   TypeSafeScoreAnswer,
 } from '@/lib/types';
 import { runMockJevInference } from '@/lib/mockJev';
+import { checkRateLimit } from '@/lib/rateLimit';
 
 export const runtime = 'nodejs';
 
@@ -82,6 +83,33 @@ function matchSemanticAction(question: string): SemanticAction | null {
 }
 
 export async function POST(req: NextRequest) {
+  // 1. 前置接口防刷与频控校验
+  const rateLimit = checkRateLimit(req);
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      {
+        code: 429,
+        message: '提问过于频繁，请稍候再试',
+        retryAfter: rateLimit.retryAfter,
+      },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(rateLimit.retryAfter),
+          'X-RateLimit-Limit': String(rateLimit.limit),
+          'X-RateLimit-Remaining': String(rateLimit.remaining),
+          'X-RateLimit-Reset': String(rateLimit.reset),
+        },
+      }
+    );
+  }
+
+  const rateLimitHeaders = {
+    'X-RateLimit-Limit': String(rateLimit.limit),
+    'X-RateLimit-Remaining': String(rateLimit.remaining),
+    'X-RateLimit-Reset': String(rateLimit.reset),
+  };
+
   try {
     const body = (await req.json()) as JevDecisionRequest;
     const { question, mode = 'yes_no', context } = body;
@@ -89,7 +117,7 @@ export async function POST(req: NextRequest) {
     if (!question || !question.trim()) {
       return NextResponse.json(
         { code: 400, message: '问题内容不能为空' },
-        { status: 400 }
+        { status: 400, headers: rateLimitHeaders }
       );
     }
 
@@ -119,10 +147,13 @@ export async function POST(req: NextRequest) {
           const remoteJson = (await remoteRes.json()) as TypeSafeSystemOneResponse;
           const parsedData = parseTypeSafeResponse(remoteJson, question.trim(), mode);
           if (parsedData) {
-            return NextResponse.json<JevDecisionResponse>({
-              code: 0,
-              data: parsedData,
-            });
+            return NextResponse.json<JevDecisionResponse>(
+              {
+                code: 0,
+                data: parsedData,
+              },
+              { headers: rateLimitHeaders }
+            );
           }
         } else {
           console.warn(`TypeSafe API 返回异常状态: ${remoteRes.status}，已平滑降级至内置推演。`);
@@ -134,14 +165,17 @@ export async function POST(req: NextRequest) {
 
     // 本地内置高拟真推演兜底
     const data = runMockJevInference(question.trim(), mode, context?.trim());
-    return NextResponse.json<JevDecisionResponse>({
-      code: 0,
-      data,
-    });
+    return NextResponse.json<JevDecisionResponse>(
+      {
+        code: 0,
+        data,
+      },
+      { headers: rateLimitHeaders }
+    );
   } catch (err: any) {
     return NextResponse.json(
       { code: 500, message: err?.message || '决策服务异常' },
-      { status: 500 }
+      { status: 500, headers: rateLimitHeaders }
     );
   }
 }
