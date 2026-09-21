@@ -1,12 +1,12 @@
 /**
  * Ask JEV (问问Jev) 生产环境全量用例自动化测试脚本
- * 目标站点: https://ask-jev-mu.vercel.app
+ * 目标站点: https://askjev.kuhung.me
  * 采用 curl 作为稳定网络传输驱动
  */
 
 import { execFileSync } from 'child_process';
 
-const BASE_URL = 'https://ask-jev-mu.vercel.app';
+const BASE_URL = 'https://askjev.kuhung.me';
 const API_URL = `${BASE_URL}/api/jev`;
 
 const results = [];

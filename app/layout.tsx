@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://askjev.kuhung.me'),
   title: '问问Jev (Ask Jev) - 专治纠结的生活微决策老管家',
   description: '面向中国大陆年轻人的复古新野蛮主义微决策神器。专治买不买、花不花、用不用、中午吃什么、去不去。',
   keywords: ['决策', '选择困难症', 'Ask Jev', '微决策', '买不买', '中午吃什么'],

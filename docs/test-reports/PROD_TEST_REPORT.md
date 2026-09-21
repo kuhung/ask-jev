@@ -4,7 +4,7 @@
 
 | 维度 | 内容说明 |
 | :--- | :--- |
-| **测试目标站点** | **[https://ask-jev-mu.vercel.app](https://ask-jev-mu.vercel.app)** (生产环境) |
+| **测试目标站点** | **[https://askjev.kuhung.me](https://askjev.kuhung.me)** (生产环境) |
 | **当前状态** | **全部已知 P1/P2 缺陷均已修复上线，第二轮全量回归测试 100% 通过**。 |
 | **回归测试统计** | 执行自动化回归用例 15 组 + 深度场景用例 16 组 + 本地逻辑断言 18 组，累计 **49 项测试**，通过率 **100%** (49/49)。 |
 | **性能基准指标** | 单次决策热时延平均 **802ms** (P50: 808ms, P95: 963ms)，3 并发总耗时 **2407ms**，服务通信稳健。 |
@@ -32,7 +32,7 @@
 
 | 用例 ID | 测试项 | 请求目标 | 预期结果 | 实际返回 | 耗时 | 判定 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| TC-NET-01 | 主页基础连通性 | `GET https://ask-jev-mu.vercel.app` | 状态码 200，HTML 正常 | 状态码 200，HTML 长度 18,857 字节 | 914ms | ✅ PASS |
+| TC-NET-01 | 主页基础连通性 | `GET https://askjev.kuhung.me` | 状态码 200，HTML 正常 | 状态码 200，HTML 长度 18,857 字节 | 914ms | ✅ PASS |
 | TC-NET-02 | 安全标头与 HSTS 校验 | `HEAD /` | 包含 HSTS 标头 | `strict-transport-security` 校验通过 | 688ms | ✅ PASS |
 | TC-NET-03 | 404 容错路由 | `GET /non-existent-page-test-404` | 状态码 404 | 状态码 404 Not Found | 666ms | ✅ PASS |
 | TC-NET-04 | 接口 Method 约束 | `GET /api/jev` | 状态码 405 | 状态码 405 Method Not Allowed | 648ms | ✅ PASS |

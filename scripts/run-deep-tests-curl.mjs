@@ -1,7 +1,7 @@
 import { execFileSync } from 'child_process';
 import fs from 'fs';
 
-const BASE_URL = 'https://ask-jev-mu.vercel.app';
+const BASE_URL = 'https://askjev.kuhung.me';
 const API_URL = `${BASE_URL}/api/jev`;
 
 function requestApi(payload) {

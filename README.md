@@ -6,7 +6,7 @@
 
 ## 一、线上访问与产品亮点
 
-- **生产环境公开访问地址**：**[https://ask-jev-mu.vercel.app](https://ask-jev-mu.vercel.app)**
+- **生产环境公开访问地址**：**[https://askjev.kuhung.me](https://askjev.kuhung.me)**
 - **开源代码仓库 (GitHub)**：**[https://github.com/kuhung/ask-jev](https://github.com/kuhung/ask-jev)**
 - **开发者主页**：**[kuhung.me](https://kuhung.me)**
 - **致敬与灵感鸣谢**：**[askjev.net](https://askjev.net)**（致敬 90 年代经典的 Ask Jeeves 拟人决策形态）
