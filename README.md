@@ -4,9 +4,12 @@
 
 ---
 
-## 一、产品定位与设计亮点
+## 一、线上访问与产品亮点
 
-1. **移动端优先体验 (Mobile-First)**：
+- **生产环境公开访问地址**：**[https://ask-jev-mu.vercel.app](https://ask-jev-mu.vercel.app)**
+- **GitHub 源码仓库**：`git@github.com:kuhung/ask-jev.git`
+
+### 核心体验设计：
    - 适配手机触控黄金区（Thumb Zone），最小触控面积不低于 44px。
    - 输入框字号锁定在 16px 以上，彻底杜绝 iOS Safari 聚焦时破坏性自动放大页面。
    - 分段控制器（Segmented Controls）：在移动端自适应为平铺大胶囊，大拇指单手即可丝滑切换。
