@@ -10,20 +10,20 @@
     "expected": "概率倾向劝退或谨慎，返回结构合法",
     "result": {
       "httpCode": 200,
-      "latency": 895,
+      "latency": 1023,
       "data": {
         "code": 0,
         "data": {
           "mode": "yes_no",
           "verdict": "坚决别买！",
-          "verdictTag": "劝退止损 (冲动度 77%)",
+          "verdictTag": "劝退止损 (冲动度 75%)",
           "badgeClass": "red",
-          "probability": 0.23,
-          "reasoning": "TypeSafe Jev 模型评估此项冲动成分高达 77%。生活里的很多执念买完就贬值。先冷静放上七天，把钱留在兜里带来的安全感更踏实。",
-          "signId": 9858,
+          "probability": 0.25,
+          "reasoning": "你现在强烈的渴望源于短期的多巴胺刺激。买前朝思暮想，买后角落落灰。把钱留在卡里带来的安全感，远胜拆快递那五分钟的虚假满足。",
+          "signId": 6130,
           "rawAnswer": {
             "type": "noul",
-            "noul": 0.23
+            "noul": 0.25
           }
         }
       }
@@ -40,17 +40,17 @@
     "expected": "概率倾向劝退，返回结构合法",
     "result": {
       "httpCode": 200,
-      "latency": 820,
+      "latency": 885,
       "data": {
         "code": 0,
         "data": {
           "mode": "yes_no",
-          "verdict": "坚决别买！",
+          "verdict": "千万别办！",
           "verdictTag": "劝退止损 (冲动度 91%)",
           "badgeClass": "red",
           "probability": 0.09,
-          "reasoning": "TypeSafe Jev 模型评估此项冲动成分高达 91%。生活里的很多执念买完就贬值。先冷静放上七天，把钱留在兜里带来的安全感更踏实。",
-          "signId": 4118,
+          "reasoning": "指望通过一次性大额付费来购买自律，是消费陷阱中最温柔的套路。先坚持连续两周每晚快走或运动30分钟，真做到了再去谈办卡。",
+          "signId": 5581,
           "rawAnswer": {
             "type": "noul",
             "noul": 0.09
@@ -69,20 +69,20 @@
     "expected": "社交场景，排查是否有消费类模板文案（坚决别买/把钱留在兜里）",
     "result": {
       "httpCode": 200,
-      "latency": 840,
+      "latency": 870,
       "data": {
         "code": 0,
         "data": {
           "mode": "yes_no",
-          "verdict": "果断去办！",
-          "verdictTag": "建议执行 (胜率 66%)",
+          "verdict": "盛装赴会！",
+          "verdictTag": "建议执行 (胜率 68%)",
           "badgeClass": "green",
-          "probability": 0.66,
-          "reasoning": "TypeSafe Jev 模型推演显示执行收益明确（概率 66%）。纠结只会徒增心理损耗，与其事后反刍遗憾，不如放手一搏，去办吧！",
-          "signId": 2940,
+          "probability": 0.68,
+          "reasoning": "这次社交能带来真实的能量交换与情绪抚慰。放下顾虑轻装赴约，享受当下的交流与氛围！",
+          "signId": 8998,
           "rawAnswer": {
             "type": "noul",
-            "noul": 0.66
+            "noul": 0.68
           }
         }
       }
@@ -98,20 +98,20 @@
     "expected": "情感语境，排查是否出现“买完就贬值”",
     "result": {
       "httpCode": 200,
-      "latency": 901,
+      "latency": 745,
       "data": {
         "code": 0,
         "data": {
           "mode": "yes_no",
-          "verdict": "坚决别买！",
-          "verdictTag": "劝退止损 (冲动度 70%)",
+          "verdict": "彻底翻篇！",
+          "verdictTag": "劝退止损 (冲动度 68%)",
           "badgeClass": "red",
-          "probability": 0.3,
-          "reasoning": "TypeSafe Jev 模型评估此项冲动成分高达 70%。生活里的很多执念买完就贬值。先冷静放上七天，把钱留在兜里带来的安全感更踏实。",
-          "signId": 4128,
+          "probability": 0.32,
+          "reasoning": "变质的冷饭加热三次也不会变新鲜。现在的不甘心只是沉没成本在作祟。立刻放下手机，深呼吸洗把脸，大步向前才能遇见新天地。",
+          "signId": 7966,
           "rawAnswer": {
             "type": "noul",
-            "noul": 0.3
+            "noul": 0.32
           }
         }
       }
@@ -128,20 +128,20 @@
     "expected": "人情社交评估，返回结构合法",
     "result": {
       "httpCode": 200,
-      "latency": 821,
+      "latency": 891,
       "data": {
         "code": 0,
         "data": {
           "mode": "yes_no",
-          "verdict": "坚决别买！",
-          "verdictTag": "劝退止损 (冲动度 70%)",
+          "verdict": "坚决别干！",
+          "verdictTag": "劝退止损 (冲动度 71%)",
           "badgeClass": "red",
-          "probability": 0.3,
-          "reasoning": "TypeSafe Jev 模型评估此项冲动成分高达 70%。生活里的很多执念买完就贬值。先冷静放上七天，把钱留在兜里带来的安全感更踏实。",
-          "signId": 4946,
+          "probability": 0.29,
+          "reasoning": "老管家综合推演评估此项冲动风险达 71%。真正值得做的事你早就兴奋地开工了，绝不会拖到现在到处问人。现在停下，立省百分之百的精力。",
+          "signId": 2136,
           "rawAnswer": {
             "type": "noul",
-            "noul": 0.3
+            "noul": 0.29
           }
         }
       }
@@ -157,24 +157,24 @@
     "expected": "选项应剥除末尾问号，不应出现“轻食鸡胸肉沙拉？！”",
     "result": {
       "httpCode": 200,
-      "latency": 811,
+      "latency": 808,
       "data": {
         "code": 0,
         "data": {
           "mode": "choice",
-          "verdict": "首选：轻食鸡胸肉沙拉？！",
-          "verdictTag": "最优选项 (置信度 30%)",
+          "verdict": "首选：轻食鸡胸肉沙拉！",
+          "verdictTag": "最优选项 (置信度 44%)",
           "badgeClass": "gold",
-          "confidence": 0.3,
-          "reasoning": "经过 TypeSafe Jev 模型多维度概率计算，选择「轻食鸡胸肉沙拉？」在当下的综合收益最高（模型置信度 30%）。不要再滑动屏幕反复比较了，听老管家的，直接定下来！",
-          "signId": 5994,
+          "confidence": 0.44,
+          "reasoning": "老管家综合推演了你的生活节律与情绪效用，选择「轻食鸡胸肉沙拉」是当下综合回报最高的一手（置信度 44%）。不要再滑动屏幕反复比较了，听老管家的，立刻定下来！",
+          "signId": 4345,
           "rawAnswer": {
             "type": "choice",
-            "choice": "轻食鸡胸肉沙拉？",
-            "confidence": 0.3,
+            "choice": "轻食鸡胸肉沙拉",
+            "confidence": 0.44,
             "probabilities": {
-              "轻食鸡胸肉沙拉？": 0.65,
-              "中午吃骨汤麻辣烫": 0.35
+              "轻食鸡胸肉沙拉": 0.72,
+              "中午吃骨汤麻辣烫": 0.28
             }
           }
         }
@@ -191,24 +191,24 @@
     "expected": "应有友好降级，不应机械返回“选项A”",
     "result": {
       "httpCode": 200,
-      "latency": 967,
+      "latency": 963,
       "data": {
         "code": 0,
         "data": {
           "mode": "choice",
-          "verdict": "首选：选项A！",
-          "verdictTag": "最优选项 (置信度 86%)",
+          "verdict": "首选：重口犒劳 (外卖热食)！",
+          "verdictTag": "最优选项 (置信度 38%)",
           "badgeClass": "gold",
-          "confidence": 0.86,
-          "reasoning": "经过 TypeSafe Jev 模型多维度概率计算，选择「选项A」在当下的综合收益最高（模型置信度 86%）。不要再滑动屏幕反复比较了，听老管家的，直接定下来！",
-          "signId": 2636,
+          "confidence": 0.38,
+          "reasoning": "老管家综合推演了你的生活节律与情绪效用，选择「重口犒劳 (外卖热食)」是当下综合回报最高的一手（置信度 38%）。不要再滑动屏幕反复比较了，听老管家的，立刻定下来！",
+          "signId": 3624,
           "rawAnswer": {
             "type": "choice",
-            "choice": "选项A",
-            "confidence": 0.86,
+            "choice": "重口犒劳 (外卖热食)",
+            "confidence": 0.38,
             "probabilities": {
-              "选项A": 0.93,
-              "选项B": 0.07
+              "重口犒劳 (外卖热食)": 0.69,
+              "健康轻食 (少油控糖)": 0.31
             }
           }
         }
@@ -225,26 +225,26 @@
     "expected": "成功解析 4 个候选项并择一",
     "result": {
       "httpCode": 200,
-      "latency": 769,
+      "latency": 876,
       "data": {
         "code": 0,
         "data": {
           "mode": "choice",
           "verdict": "首选：纯净水！",
-          "verdictTag": "最优选项 (置信度 56%)",
+          "verdictTag": "最优选项 (置信度 63%)",
           "badgeClass": "gold",
-          "confidence": 0.56,
-          "reasoning": "经过 TypeSafe Jev 模型多维度概率计算，选择「纯净水」在当下的综合收益最高（模型置信度 56%）。不要再滑动屏幕反复比较了，听老管家的，直接定下来！",
-          "signId": 9695,
+          "confidence": 0.63,
+          "reasoning": "老管家综合推演了你的生活节律与情绪效用，选择「纯净水」是当下综合回报最高的一手（置信度 63%）。不要再滑动屏幕反复比较了，听老管家的，立刻定下来！",
+          "signId": 7406,
           "rawAnswer": {
             "type": "choice",
             "choice": "纯净水",
-            "confidence": 0.56,
+            "confidence": 0.63,
             "probabilities": {
-              "拿铁": 0.16,
+              "拿铁": 0.13,
+              "喝美式": 0.12,
               "燕麦奶": 0.03,
-              "喝美式": 0.13,
-              "纯净水": 0.68
+              "纯净水": 0.72
             }
           }
         }
@@ -261,7 +261,7 @@
     "expected": "返回 1-10 分且包含冲动级别与置信度",
     "result": {
       "httpCode": 200,
-      "latency": 802,
+      "latency": 827,
       "data": {
         "code": 0,
         "data": {
@@ -270,13 +270,13 @@
           "verdict": "冲动指数 8 分",
           "verdictTag": "冲动预警",
           "badgeClass": "red",
-          "confidence": 0.76,
-          "reasoning": "TypeSafe Jev 模型加权评分得出冲动指数为 8/10（置信度 76%）。这属于典型的情绪应激决策，买前爽快，还款肉疼。建议立刻关掉软件，深呼吸三分钟，立省百分之百。",
-          "signId": 9064,
+          "confidence": 0.73,
+          "reasoning": "老管家加权评估此念头的冲动指数为 8/10 分（置信度 73%）。这属于典型的情绪应激反应，脑热开工，日后肉疼。建议立刻关掉软件，深呼吸三分钟，立省百分之百。",
+          "signId": 8841,
           "rawAnswer": {
             "type": "score",
-            "score": 2.23,
-            "confidence": 0.76,
+            "score": 2.26,
+            "confidence": 0.73,
             "legend": {
               "0": "第1级：深思熟虑，理性决策，后悔概率极低",
               "1": "第2级：轻度犹豫，可适度小成本试水",
@@ -286,8 +286,8 @@
             "probabilities": {
               "0": 0,
               "1": 0.01,
-              "2": 0.75,
-              "3": 0.24
+              "2": 0.72,
+              "3": 0.27
             }
           }
         }
@@ -304,7 +304,7 @@
     "expected": "冲动指数应偏低（相对理性）",
     "result": {
       "httpCode": 200,
-      "latency": 800,
+      "latency": 917,
       "data": {
         "code": 0,
         "data": {
@@ -313,13 +313,13 @@
           "verdict": "冲动指数 4 分",
           "verdictTag": "相对理性",
           "badgeClass": "gold",
-          "confidence": 0.49,
-          "reasoning": "TypeSafe Jev 模型加权评分得出冲动指数为 4/10（置信度 49%）。该念头具备一定的可行性，但建议先做好细致的预算拆解与备用方案再开工。",
-          "signId": 7137,
+          "confidence": 0.5,
+          "reasoning": "老管家加权评估此项决策可行性良好，冲动指数仅为 4/10 分（置信度 50%）。该想法具备较强理性支撑，建议进一步拆解小成本试水步骤，稳步推进。",
+          "signId": 6651,
           "rawAnswer": {
             "type": "score",
-            "score": 0.51,
-            "confidence": 0.49,
+            "score": 0.5,
+            "confidence": 0.5,
             "legend": {
               "0": "第1级：深思熟虑，理性决策，后悔概率极低",
               "1": "第2级：轻度犹豫，可适度小成本试水",
@@ -327,8 +327,8 @@
               "3": "第4级：极其脑热，必定后悔，强烈建议立省100%"
             },
             "probabilities": {
-              "0": 0.52,
-              "1": 0.46,
+              "0": 0.53,
+              "1": 0.45,
               "2": 0.02,
               "3": 0
             }
@@ -348,7 +348,7 @@
     "expected": "概率显著倾向 No（劝退）",
     "result": {
       "httpCode": 200,
-      "latency": 993,
+      "latency": 1019,
       "data": {
         "code": 0,
         "data": {
@@ -357,8 +357,8 @@
           "verdictTag": "劝退止损 (冲动度 97%)",
           "badgeClass": "red",
           "probability": 0.03,
-          "reasoning": "TypeSafe Jev 模型评估此项冲动成分高达 97%。生活里的很多执念买完就贬值。先冷静放上七天，把钱留在兜里带来的安全感更踏实。",
-          "signId": 2607,
+          "reasoning": "你现在强烈的渴望源于短期的多巴胺刺激。买前朝思暮想，买后角落落灰。把钱留在卡里带来的安全感，远胜拆快递那五分钟的虚假满足。",
+          "signId": 7506,
           "rawAnswer": {
             "type": "noul",
             "noul": 0.03
@@ -378,20 +378,20 @@
     "expected": "概率显著倾向 Yes（果断去办）",
     "result": {
       "httpCode": 200,
-      "latency": 946,
+      "latency": 940,
       "data": {
         "code": 0,
         "data": {
           "mode": "yes_no",
-          "verdict": "果断去办！",
-          "verdictTag": "建议执行 (胜率 88%)",
+          "verdict": "果断拿下！",
+          "verdictTag": "建议执行 (胜率 87%)",
           "badgeClass": "green",
-          "probability": 0.88,
-          "reasoning": "TypeSafe Jev 模型推演显示执行收益明确（概率 88%）。纠结只会徒增心理损耗，与其事后反刍遗憾，不如放手一搏，去办吧！",
-          "signId": 5785,
+          "probability": 0.87,
+          "reasoning": "这件物品带来的长期使用价值明显高于代价。既然已深思熟虑，那就开开心心收入囊中，让它提升你的生活品质！",
+          "signId": 1712,
           "rawAnswer": {
             "type": "noul",
-            "noul": 0.88
+            "noul": 0.87
           }
         }
       }
@@ -407,7 +407,7 @@
     "expected": "返回 HTTP 400 状态码",
     "result": {
       "httpCode": 400,
-      "latency": 658,
+      "latency": 887,
       "data": {
         "code": 400,
         "message": "问题内容不能为空"
@@ -424,7 +424,7 @@
     "expected": "返回 HTTP 400 状态码",
     "result": {
       "httpCode": 400,
-      "latency": 662,
+      "latency": 691,
       "data": {
         "code": 400,
         "message": "问题内容不能为空"
@@ -441,17 +441,17 @@
     "expected": "服务正常返回，无反射或代码注入风险",
     "result": {
       "httpCode": 200,
-      "latency": 822,
+      "latency": 808,
       "data": {
         "code": 0,
         "data": {
           "mode": "yes_no",
-          "verdict": "坚决别买！",
+          "verdict": "坚决别干！",
           "verdictTag": "劝退止损 (冲动度 96%)",
           "badgeClass": "red",
           "probability": 0.04,
-          "reasoning": "TypeSafe Jev 模型评估此项冲动成分高达 96%。生活里的很多执念买完就贬值。先冷静放上七天，把钱留在兜里带来的安全感更踏实。",
-          "signId": 3536,
+          "reasoning": "老管家综合推演评估此项冲动风险达 96%。真正值得做的事你早就兴奋地开工了，绝不会拖到现在到处问人。现在停下，立省百分之百的精力。",
+          "signId": 2631,
           "rawAnswer": {
             "type": "noul",
             "noul": 0.04
@@ -470,17 +470,17 @@
     "expected": "服务正常处理，无错误中断",
     "result": {
       "httpCode": 200,
-      "latency": 794,
+      "latency": 817,
       "data": {
         "code": 0,
         "data": {
           "mode": "yes_no",
-          "verdict": "坚决别买！",
+          "verdict": "坚决别干！",
           "verdictTag": "劝退止损 (冲动度 98%)",
           "badgeClass": "red",
           "probability": 0.02,
-          "reasoning": "TypeSafe Jev 模型评估此项冲动成分高达 98%。生活里的很多执念买完就贬值。先冷静放上七天，把钱留在兜里带来的安全感更踏实。",
-          "signId": 3704,
+          "reasoning": "老管家综合推演评估此项冲动风险达 98%。真正值得做的事你早就兴奋地开工了，绝不会拖到现在到处问人。现在停下，立省百分之百的精力。",
+          "signId": 8554,
           "rawAnswer": {
             "type": "noul",
             "noul": 0.02
