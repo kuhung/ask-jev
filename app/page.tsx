@@ -103,9 +103,10 @@ export default function Home() {
   };
 
   // 场景词条选择
-  const handleSelectTopic = (q: string, m: DecisionMode) => {
+  const handleSelectTopic = async (q: string, m: DecisionMode) => {
     setQuestion(q);
     setMode(m);
+    setContext('');
     setIsLoading(true);
     setLastQuestion(q);
     setVerdictData(null);
@@ -117,19 +118,30 @@ export default function Home() {
     if (customKey?.trim()) headers['x-typesafe-key'] = customKey.trim();
     if (customEndpoint?.trim()) headers['x-typesafe-endpoint'] = customEndpoint.trim();
 
-    fetch('/api/jev', {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({ question: q, mode: m }),
-    })
-      .then((r) => r.json())
-      .then((json: JevDecisionResponse) => {
+    try {
+      const res = await fetch('/api/jev', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ question: q, mode: m, context: '' }),
+      });
+
+      if (res.ok) {
+        const json: JevDecisionResponse = await res.json();
         setVerdictData(json.data);
-        setTimeout(() => {
-          verdictRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }, 100);
-      })
-      .finally(() => setIsLoading(false));
+      } else {
+        throw new Error('API 调用失败');
+      }
+    } catch {
+      console.warn('词条请求后端失败，使用客户端回退推演');
+      const { runMockJevInference } = await import('@/lib/mockJev');
+      const fallback = runMockJevInference(q, m, '');
+      setVerdictData(fallback);
+    } finally {
+      setIsLoading(false);
+      setTimeout(() => {
+        verdictRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
   };
 
   return (
@@ -197,7 +209,7 @@ export default function Home() {
       {/* 主页面容器 */}
       <main className="max-w-4xl mx-auto px-3 sm:px-6 pt-4 sm:pt-8">
         {/* 顶部形象与标语区 */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 pb-4 border-b-2 border-dashed border-black/20">
           <div className="flex items-center gap-2 sm:gap-3">
             <JevAvatar className="w-16 h-20 sm:w-24 sm:h-28" />
             <AskBadge />
@@ -207,7 +219,7 @@ export default function Home() {
             <h1 className="font-display text-3xl sm:text-5xl text-retroRed-600 tracking-tight leading-none">
               Have a Question?
             </h1>
-            <p className="font-sans font-bold text-sm sm:text-xl text-black mt-1">
+            <p className="font-sans font-bold text-sm sm:text-xl text-black mt-1.5">
               专治日常内耗，直接敲上问题问 <span className="font-display text-retroRed-600 text-2xl sm:text-3xl">Ask!</span>
             </p>
           </div>
@@ -216,7 +228,7 @@ export default function Home() {
         {/* 中间核心控制区 */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-start">
           {/* 左侧说明与开源鸣谢卡片 */}
-          <aside className="lg:col-span-1 space-y-3">
+          <aside className="order-2 lg:order-1 lg:col-span-1 space-y-3">
             <div className="bg-yellow-100 border-2 border-dashed border-amber-600 p-3 rounded shadow-brutal-sm flex items-start gap-2.5">
               <div className="bg-amber-400 border border-amber-700 text-retroRed-600 font-display text-xs font-bold px-1.5 py-0.5 rounded shadow-sm">
                 NEW!
@@ -229,7 +241,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => setIsApiModalOpen(true)}
-                  className="text-blue-800 underline font-bold hover:text-red-700"
+                  className="text-blue-800 underline font-bold hover:text-red-700 cursor-pointer"
                 >
                   查看接口配置 &raquo;
                 </button>
@@ -276,10 +288,23 @@ export default function Home() {
                 </a>
               </div>
             </div>
+
+            {/* 老管家执业守则卡片，充实侧栏，平衡页面视觉重心 */}
+            <div className="bg-cream-100 border-2 border-black p-3 rounded shadow-brutal-sm text-xs space-y-1.5">
+              <div className="font-bold text-black border-b border-black pb-1 flex items-center justify-between">
+                <span>老管家当班备忘</span>
+                <span className="text-[10px] bg-retroRed-600 text-white px-1 rounded font-bold">箴言</span>
+              </div>
+              <ul className="text-gray-700 space-y-1 text-[11px] leading-snug">
+                <li>• 纠结超3分钟，坚决交由硬币裁决。</li>
+                <li>• 听劝才能少走弯路，内耗止于行动。</li>
+                <li>• 冲动消费放满7天，大概率不会再买。</li>
+              </ul>
+            </div>
           </aside>
 
           {/* 右侧核心交互输入盒 */}
-          <div className="lg:col-span-3 space-y-4">
+          <div className="order-1 lg:order-2 lg:col-span-3 space-y-4">
             <DecisionBox
               question={question}
               setQuestion={setQuestion}

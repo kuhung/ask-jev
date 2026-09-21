@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { DecisionMode } from '@/lib/types';
-import { Sparkles, RotateCcw, ChevronDown, ChevronUp } from 'lucide-react';
+import { Sparkles, RotateCcw, ChevronDown, ChevronUp, X } from 'lucide-react';
 
 interface DecisionBoxProps {
   question: string;
@@ -40,10 +40,12 @@ export const DecisionBox: React.FC<DecisionBoxProps> = ({
     }
   }, [context]);
 
-  // 当检测到对比连词时，自动将模式对齐为 choice，避免答非所问
+  // 当检测到对比连词或评分关键词时，自动对齐模式，提升输入体验
   useEffect(() => {
     if (/还是|或者|vs|VS|\/|、/.test(question) && mode === 'yes_no') {
       setMode('choice');
+    } else if (/打分|评个分|靠谱度|指数|评分/.test(question) && mode !== 'score') {
+      setMode('score');
     }
   }, [question, mode, setMode]);
 
@@ -71,11 +73,11 @@ export const DecisionBox: React.FC<DecisionBoxProps> = ({
     <div className="w-full bg-cream-50 border-2 border-black shadow-brutal p-3 sm:p-5 rounded-md">
       {/* 搜索输入行与大红色 Ask 按钮 */}
       <div className="flex flex-row items-center gap-2 sm:gap-3">
-        <div className="flex-1 bg-white border-2 border-black shadow-retro-inset p-1.5 sm:p-2">
+        <div className="flex-1 bg-white border-2 border-black shadow-retro-inset p-1.5 sm:p-2 relative flex items-center">
           <input
             ref={inputRef}
             type="text"
-            className="w-full bg-transparent outline-none text-base sm:text-lg font-sans text-black placeholder:text-gray-400 placeholder:italic"
+            className="w-full bg-transparent outline-none text-base sm:text-lg font-sans text-black placeholder:text-gray-400 placeholder:italic pr-7"
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             onCompositionStart={() => { isComposingRef.current = true; }}
@@ -84,6 +86,19 @@ export const DecisionBox: React.FC<DecisionBoxProps> = ({
             placeholder={getPlaceholder()}
             autoComplete="off"
           />
+          {question.trim().length > 0 && (
+            <button
+              type="button"
+              onClick={() => {
+                setQuestion('');
+                inputRef.current?.focus();
+              }}
+              className="absolute right-2 text-gray-400 hover:text-black p-0.5 rounded transition-colors"
+              title="清除输入"
+            >
+              <X size={16} />
+            </button>
+          )}
         </div>
         <button
           onClick={() => {
@@ -91,7 +106,7 @@ export const DecisionBox: React.FC<DecisionBoxProps> = ({
             onAsk();
           }}
           disabled={isLoading}
-          className="bg-gradient-to-br from-retroRed-500 via-retroRed-600 to-retroRed-800 text-white font-display text-xl sm:text-2xl px-5 sm:px-8 py-2.5 sm:py-3 rounded-[50%/50%] border-2 border-white outline outline-2 outline-black shadow-brutal hover:brightness-105 active:translate-y-0.5 active:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+          className="bg-gradient-to-br from-retroRed-500 via-retroRed-600 to-retroRed-800 text-white font-display text-xl sm:text-2xl px-5 sm:px-8 py-2.5 sm:py-3 rounded-[50%/50%] border-2 border-white outline outline-2 outline-black shadow-brutal hover:brightness-105 active:translate-y-0.5 active:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap cursor-pointer"
         >
           {isLoading ? '审题中...' : 'Ask!'}
         </button>
@@ -141,7 +156,11 @@ export const DecisionBox: React.FC<DecisionBoxProps> = ({
         <button
           type="button"
           onClick={() => setShowContext(!showContext)}
-          className="text-xs sm:text-sm text-blue-800 underline font-bold flex items-center self-end sm:self-center gap-1 hover:text-red-700"
+          className={`text-xs sm:text-sm px-2.5 py-1 rounded border border-black font-bold flex items-center self-end sm:self-center gap-1 transition-all ${
+            showContext
+              ? 'bg-amber-100 text-retroRed-700 shadow-brutal-sm'
+              : 'bg-white hover:bg-cream-100 text-blue-900 shadow-sm'
+          }`}
         >
           {showContext ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
           {showContext ? '收起背景信息' : '+ 补充具体顾虑/预算'}
@@ -164,11 +183,11 @@ export const DecisionBox: React.FC<DecisionBoxProps> = ({
       )}
 
       {/* 快捷操作栏：重置、抽灵感 */}
-      <div className="mt-3 pt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-gray-700">
+      <div className="mt-3 pt-2 border-t border-dashed border-gray-300 flex flex-wrap items-center justify-between gap-2 text-xs">
         <button
           type="button"
           onClick={onReset}
-          className="bg-retroWin-gray border-2 border-retroWin-dark border-t-white border-l-white px-2.5 py-1 text-black font-sans hover:bg-gray-200 active:border-retroWin-dark active:border-b-white active:border-r-white flex items-center gap-1"
+          className="bg-white hover:bg-cream-100 text-black border border-black px-2.5 py-1 font-bold rounded shadow-brutal-sm active:translate-y-0.5 active:shadow-none transition-all flex items-center gap-1"
         >
           <RotateCcw size={12} /> 清空重置
         </button>
@@ -176,10 +195,10 @@ export const DecisionBox: React.FC<DecisionBoxProps> = ({
         <button
           type="button"
           onClick={onInspiration}
-          className="text-blue-800 underline font-bold hover:text-red-700 flex items-center gap-1"
+          className="bg-amber-100 hover:bg-amber-200 text-retroRed-700 border border-black px-3 py-1 font-bold rounded shadow-brutal-sm active:translate-y-0.5 active:shadow-none transition-all flex items-center gap-1.5"
         >
           <Sparkles size={13} className="text-amber-600" />
-          <span>没有灵感？点此抽取热门纠结场景</span>
+          <span>抽取热门纠结场景</span>
         </button>
       </div>
     </div>

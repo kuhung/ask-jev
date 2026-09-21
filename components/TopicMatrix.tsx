@@ -123,7 +123,7 @@ export const TopicMatrix: React.FC<TopicMatrixProps> = ({
                 type="button"
                 onClick={() =>
                   notify(
-                    '【赛博硬币决断法】：在两件事之间犹豫时，关键不是落下的那一面，而是抛向空中的瞬间你心里已经有了倾向。Jev 帮你把内心的声音直接放大！'
+                    '【赛博硬币决断法】：在两件事之间犹豫时，硬币抛向空中的瞬间你心里其实已有倾向。Jev 帮你把内心的声音直接放大！'
                   )
                 }
                 className="underline hover:text-retroRed-600 text-left"

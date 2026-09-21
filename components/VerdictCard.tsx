@@ -111,12 +111,13 @@ export const VerdictCard: React.FC<VerdictCardProps> = ({
       </div>
 
       {/* 管家犀利评语 */}
-      <div className="bg-cream-100 border-l-4 border-retroRed-600 p-3 sm:p-4 rounded-r text-sm sm:text-base leading-relaxed text-gray-900 font-serif mb-4">
-        {data.reasoning}
+      <div className="bg-cream-100 border-l-4 border-retroRed-600 p-3.5 sm:p-4 rounded-r text-sm sm:text-base leading-relaxed text-gray-900 font-serif mb-4 shadow-sm relative">
+        <span className="text-retroRed-600 font-serif text-2xl leading-none absolute -top-1 left-2 select-none opacity-40">“</span>
+        <div className="pl-3">{data.reasoning}</div>
       </div>
 
       {/* 情绪闭环操作按钮 */}
-      <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-gray-200">
+      <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-gray-200">
         <button
           type="button"
           onClick={handleAdopt}
@@ -124,7 +125,7 @@ export const VerdictCard: React.FC<VerdictCardProps> = ({
           className={`flex-1 sm:flex-none font-bold border-2 border-black px-4 py-2 text-xs sm:text-sm rounded shadow-brutal-sm active:translate-y-0.5 active:shadow-none flex items-center justify-center gap-1.5 transition-all ${
             isAdopted
               ? 'bg-gray-200 text-gray-500 border-gray-400 cursor-not-allowed shadow-none'
-              : 'bg-amber-200 hover:bg-amber-300 text-black'
+              : 'bg-amber-300 hover:bg-amber-400 text-black'
           }`}
         >
           <ThumbsUp size={14} /> {isAdopted ? '已遵照管家裁决！' : '听老管家的，就这么办！'}
@@ -133,7 +134,7 @@ export const VerdictCard: React.FC<VerdictCardProps> = ({
         <button
           type="button"
           onClick={onReroll}
-          className="bg-retroWin-gray hover:bg-gray-200 text-black border-2 border-retroWin-dark px-3 py-2 text-xs sm:text-sm rounded shadow-brutal-sm active:translate-y-0.5 active:shadow-none flex items-center justify-center gap-1"
+          className="bg-white hover:bg-cream-100 text-black font-bold border-2 border-black px-3 py-2 text-xs sm:text-sm rounded shadow-brutal-sm active:translate-y-0.5 active:shadow-none flex items-center justify-center gap-1 transition-all"
         >
           <RefreshCw size={13} /> 我不服再摇一次
         </button>
@@ -141,7 +142,7 @@ export const VerdictCard: React.FC<VerdictCardProps> = ({
         <button
           type="button"
           onClick={handleCopy}
-          className="bg-white hover:bg-gray-100 text-black border-2 border-black px-3 py-2 text-xs sm:text-sm rounded shadow-brutal-sm active:translate-y-0.5 active:shadow-none flex items-center justify-center gap-1"
+          className="bg-white hover:bg-cream-100 text-black font-bold border-2 border-black px-3 py-2 text-xs sm:text-sm rounded shadow-brutal-sm active:translate-y-0.5 active:shadow-none flex items-center justify-center gap-1 transition-all"
         >
           {copied ? <Check size={13} className="text-green-600" /> : <Copy size={13} />}
           <span>{copied ? '已复制金句' : '复制金句'}</span>
