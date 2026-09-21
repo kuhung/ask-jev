@@ -78,7 +78,8 @@ ask-jev/
 ├── docs/
 │   ├── PRD.md                    # 需求架构方案与移动端规范
 │   ├── reviews/
-│   │   └── UX_AND_EXPRESSION_REVIEW.md # 表达体系、交互连贯性与表现形式深度审查
+│   │   ├── UX_AND_EXPRESSION_REVIEW.md           # 表达体系、交互连贯性与表现形式深度审查
+│   │   └── LAYOUT_AND_INTERACTION_OPTIMIZATION.md # 布局重心、交互反馈与风格一致性优化报告
 │   └── test-reports/
 │       └── PROD_TEST_REPORT.md   # 生产环境详尽用例测试与评估报告
 ├── scripts/
