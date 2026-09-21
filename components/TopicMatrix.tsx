@@ -144,6 +144,36 @@ export const TopicMatrix: React.FC<TopicMatrixProps> = ({
                 治好精神内耗的 100 句话
               </button>
             </li>
+            <li className="pt-2 border-t border-dashed border-gray-400">
+              <a
+                href="https://github.com/kuhung/ask-jev"
+                target="_blank"
+                rel="noreferrer"
+                className="underline hover:text-retroRed-600 inline-flex items-center gap-1 font-bold"
+              >
+                GitHub 开源项目
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://kuhung.me"
+                target="_blank"
+                rel="noreferrer"
+                className="underline hover:text-retroRed-600 inline-flex items-center gap-1"
+              >
+                开发者：kuhung.me
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://askjev.net"
+                target="_blank"
+                rel="noreferrer"
+                className="underline hover:text-retroRed-600 inline-flex items-center gap-1"
+              >
+                致敬鸣谢：askjev.net
+              </a>
+            </li>
           </ul>
         </div>
       </div>

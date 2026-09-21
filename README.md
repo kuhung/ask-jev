@@ -7,7 +7,9 @@
 ## 一、线上访问与产品亮点
 
 - **生产环境公开访问地址**：**[https://ask-jev-mu.vercel.app](https://ask-jev-mu.vercel.app)**
-- **GitHub 源码仓库**：`git@github.com:kuhung/ask-jev.git`
+- **开源代码仓库 (GitHub)**：**[https://github.com/kuhung/ask-jev](https://github.com/kuhung/ask-jev)**
+- **开发者主页**：**[kuhung.me](https://kuhung.me)**
+- **致敬与灵感鸣谢**：**[askjev.net](https://askjev.net)**（致敬 90 年代经典的 Ask Jeeves 拟人决策形态）
 
 ### 核心体验设计：
    - 适配手机触控黄金区（Thumb Zone），最小触控面积不低于 44px。
@@ -89,3 +91,12 @@ ask-jev/
 ├── vercel.json                   # Vercel 部署配置
 └── README.md                     # 本说明文档
 ```
+
+---
+
+## 四、致敬与开发者信息
+
+- **项目开源代码库**：[https://github.com/kuhung/ask-jev](https://github.com/kuhung/ask-jev)
+- **开发者**：[kuhung.me](https://kuhung.me)
+- **特别致敬与鸣谢**：[askjev.net](https://askjev.net)（为本项目提供了经典管家拟人决策原型的灵感来源）
+

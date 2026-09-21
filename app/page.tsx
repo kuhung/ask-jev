@@ -9,7 +9,7 @@ import { TopicMatrix } from '@/components/TopicMatrix';
 import { ApiSettingsModal } from '@/components/ApiSettingsModal';
 import { DecisionMode, JevDecisionData, JevDecisionResponse } from '@/lib/types';
 import { INSPIRATION_ITEMS } from '@/lib/mockJev';
-import { Star, Bell } from 'lucide-react';
+import { Star, Bell, Github } from 'lucide-react';
 
 export default function Home() {
   const [question, setQuestion] = useState('');
@@ -164,6 +164,15 @@ export default function Home() {
         </div>
 
         <div className="flex items-center gap-1.5 sm:gap-2">
+          <a
+            href="https://github.com/kuhung/ask-jev"
+            target="_blank"
+            rel="noreferrer"
+            className="bg-cream-50 hover:bg-white text-black font-bold text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 border-2 border-black rounded shadow-brutal-sm active:translate-y-0.5 active:shadow-none transition-all inline-flex items-center gap-1"
+          >
+            <Github size={13} />
+            <span>GitHub</span>
+          </a>
           <button
             type="button"
             onClick={() => setIsApiModalOpen(true)}
@@ -291,6 +300,45 @@ export default function Home() {
             联系管家 &raquo;
           </button>
         </aside>
+        {/* 底部版权、开源仓库与致敬鸣谢 */}
+        <footer className="mt-8 pt-4 pb-8 border-t-2 border-dashed border-black/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-700">
+          <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-start">
+            <a
+              href="https://github.com/kuhung/ask-jev"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 font-bold text-black hover:text-retroRed-600 underline"
+            >
+              <Github size={14} />
+              <span>开源代码库 (GitHub)</span>
+            </a>
+            <span className="text-gray-400">|</span>
+            <span>
+              开发者：
+              <a
+                href="https://kuhung.me"
+                target="_blank"
+                rel="noreferrer"
+                className="font-bold text-blue-900 hover:text-retroRed-600 underline"
+              >
+                kuhung.me
+              </a>
+            </span>
+          </div>
+
+          <div className="text-center sm:text-right text-xs text-gray-600">
+            特别致敬与鸣谢：
+            <a
+              href="https://askjev.net"
+              target="_blank"
+              rel="noreferrer"
+              className="font-bold text-blue-900 hover:text-retroRed-600 underline ml-1"
+            >
+              askjev.net
+            </a>
+            （经典灵感源泉）
+          </div>
+        </footer>
       </main>
 
       {/* 接口设置弹窗 */}
