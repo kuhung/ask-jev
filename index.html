@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>问问Jev (Ask Jev) - 专治纠结的生活微决策老管家</title>
+  <style>
+    /* 全局复古 Web 1.0 样式 */
+    :root {
+      --bg-cream: #FAF8D4;
+      --panel-bg: #FFFFEB;
+      --win-border-light: #FFFFFF;
+      --win-border-dark: #7F7F7F;
+      --win-border-darker: #404040;
+      --topbar-bg: #808098;
+      --topbar-tab-active: #BFBF97;
+      --topbar-tab-inactive: #4B4B6E;
+      --link-blue: #0000CC;
+      --link-visited: #551A8B;
+      --ask-red: #CC0000;
+      --ask-red-dark: #880000;
+      --text-main: #000000;
+      --text-muted: #555555;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-cream);
+      color: var(--text-main);
+      font-family: "SimSun", "Songti SC", "Times New Roman", Times, serif;
+      font-size: 14px;
+      line-height: 1.4;
+      padding-bottom: 40px;
+    }
+
+    a {
+      color: var(--link-blue);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    a:hover {
+      color: #FF0000;
+    }
+
+    /* 顶部复古导航栏 */
+    .top-nav-container {
+      background-color: var(--topbar-bg);
+      border-bottom: 2px solid #5A5A6E;
+      display: flex;
+      padding-left: 12px;
+      padding-top: 4px;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,0.2);
+    }
+
+    .top-tab {
+      padding: 6px 18px 4px 18px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: bold;
+      font-size: 13px;
+      text-decoration: none;
+      border: 1px solid #333344;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      margin-right: 2px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .top-tab.active {
+      background-color: var(--topbar-tab-active);
+      color: #000000;
+      border-top: 2px solid #FFFFEE;
+      border-left: 2px solid #FFFFEE;
+      border-right: 2px solid #555533;
+    }
+
+    .top-tab.inactive {
+      background-color: var(--topbar-tab-inactive);
+      color: #FFFFFF;
+      border-top: 1px solid #777799;
+      border-left: 1px solid #777799;
+      border-right: 1px solid #222233;
+    }
+    .top-tab.inactive:hover {
+      background-color: #63638E;
+      color: #FFFFEE;
+    }
+
+    /* 主页面画框 */
+    .page-wrapper {
+      max-width: 960px;
+      margin: 16px auto;
+      padding: 0 16px;
+    }
+
+    /* 顶部标头区域 */
+    .header-section {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .jev-avatar {
+      width: 105px;
+      height: 125px;
+      filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.25));
+    }
+
+    .logo-badge {
+      display: inline-block;
+      position: relative;
+    }
+
+    .ask-badge-pill {
+      background: radial-gradient(circle at 35% 30%, #FF3333, #AA0000 70%, #660000 100%);
+      border: 3px solid #FFFFEE;
+      border-radius: 50% / 50%;
+      padding: 12px 22px;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 2px 3px 6px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.7);
+      transform: rotate(-6deg);
+    }
+
+    .ask-badge-text {
+      color: #FFFFFF;
+      font-family: "Impact", "Arial Black", sans-serif;
+      font-size: 32px;
+      letter-spacing: -1px;
+      text-shadow: 2px 2px 0px #440000;
+      font-style: italic;
+      line-height: 0.9;
+    }
+
+    .ask-sub-text {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: #000000;
+      margin-left: 28px;
+      margin-top: -6px;
+      letter-spacing: 0px;
+    }
+
+    .headline-group {
+      text-align: center;
+      padding-right: 30px;
+    }
+
+    .main-question-headline {
+      color: #CC0000;
+      font-family: "Impact", "Arial Black", sans-serif;
+      font-size: 50px;
+      line-height: 1;
+      letter-spacing: -0.5px;
+      margin-bottom: 2px;
+      text-transform: none;
+    }
+
+    .sub-headline-text {
+      color: #000000;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 22px;
+      font-weight: bold;
+    }
+    .sub-headline-ask {
+      color: #CC0000;
+      font-size: 40px;
+      font-family: "Impact", "Arial Black", sans-serif;
+      vertical-align: middle;
+      margin-left: 4px;
+    }
+
+    /* 中部搜索交互带 */
+    .interaction-strip {
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+      align-items: flex-start;
+    }
+
+    /* 左侧黄色爆炸贴纸 (New Badge) */
+    .badge-callout {
+      position: relative;
+      padding-top: 10px;
+    }
+
+    .starburst-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: #FFFFF0;
+      border: 1px dashed #CC9900;
+      padding: 10px;
+      border-radius: 4px;
+      box-shadow: 1px 2px 3px rgba(0,0,0,0.08);
+    }
+
+    .starburst-icon {
+      flex-shrink: 0;
+      width: 58px;
+      height: 58px;
+    }
+
+    .starburst-desc {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .starburst-desc a {
+      font-weight: bold;
+      color: #0000CC;
+    }
+
+    /* 右侧主搜索与决策框 */
+    .search-console {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .search-input-wrapper {
+      flex: 1;
+      background: #FFFFFF;
+      border: 2px solid;
+      border-color: #808080 #DFDFDF #DFDFDF #808080; /* inset 效果 */
+      padding: 4px 6px;
+      box-shadow: inset 1px 1px 2px rgba(0,0,0,0.25);
+    }
+
+    .search-input {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      font-family: Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      padding: 6px 4px;
+      background: transparent;
+      color: #111111;
+    }
+    .search-input::placeholder {
+      color: #777777;
+      font-style: italic;
+    }
+
+    /* 大红色椭圆 Ask 按钮 */
+    .ask-btn-primary {
+      background: radial-gradient(circle at 35% 30%, #FF3B30, #CC0000 65%, #880000 100%);
+      border: 2px solid #FFFFFF;
+      outline: 1px solid #880000;
+      border-radius: 50% / 50%;
+      padding: 10px 24px;
+      color: #FFFFFF;
+      font-family: "Impact", "Arial Black", sans-serif;
+      font-size: 26px;
+      font-style: italic;
+      letter-spacing: -0.5px;
+      cursor: pointer;
+      box-shadow: 2px 3px 5px rgba(0,0,0,0.35), inset 0 2px 3px rgba(255,255,255,0.7);
+      transition: transform 0.05s ease, box-shadow 0.05s ease;
+      white-space: nowrap;
+      text-shadow: 1px 1px 0px #400000;
+    }
+    .ask-btn-primary:hover {
+      filter: brightness(1.08);
+    }
+    .ask-btn-primary:active {
+      transform: translateY(2px) scale(0.98);
+      box-shadow: 1px 1px 2px rgba(0,0,0,0.4), inset 0 1px 2px rgba(0,0,0,0.5);
+    }
+    .ask-btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* 模式控制与小按钮区 */
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      padding: 4px 0;
+    }
+
+    .mode-radios {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .mode-radio-label {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+    }
+    .mode-radio-label input[type="radio"] {
+      cursor: pointer;
+      accent-color: #CC0000;
+    }
+    .mode-radio-label.active-mode {
+      font-weight: bold;
+    }
+
+    .aux-links {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+    }
+
+    .action-links-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      padding-top: 2px;
+    }
+
+    /* Windows 98 风格立体按钮 */
+    .btn-win98 {
+      background-color: #D4D0C8;
+      border: 2px solid;
+      border-color: #FFFFFF #404040 #404040 #FFFFFF;
+      color: #000000;
+      padding: 2px 10px;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      cursor: pointer;
+      box-shadow: inset 1px 1px 0px #ECE9D8;
+    }
+    .btn-win98:hover {
+      background-color: #E2DFD8;
+    }
+    .btn-win98:active {
+      border-color: #404040 #FFFFFF #FFFFFF #404040;
+      padding: 3px 9px 1px 11px;
+    }
+
+    /* 折叠上下文输入面板 */
+    .context-panel {
+      display: none;
+      background: #FFFCE0;
+      border: 1px solid #CCBB88;
+      padding: 10px 12px;
+      margin-top: 6px;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+    }
+    .context-panel.show {
+      display: block;
+    }
+    .context-textarea {
+      width: 100%;
+      height: 48px;
+      border: 1px solid #999;
+      font-family: inherit;
+      font-size: 12px;
+      padding: 4px;
+      margin-top: 4px;
+      resize: vertical;
+    }
+
+    /* Jev 裁决结果展示板 (Result Showcase) */
+    .verdict-envelope-wrap {
+      display: none;
+      margin-top: 14px;
+      animation: stampAppear 0.3s ease-out;
+    }
+    .verdict-envelope-wrap.visible {
+      display: block;
+    }
+
+    @keyframes stampAppear {
+      0% { transform: scale(0.95); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .verdict-box {
+      background: #FFFFF8;
+      border: 3px double #8B0000;
+      padding: 16px 20px;
+      box-shadow: 3px 4px 10px rgba(0,0,0,0.15);
+      position: relative;
+    }
+
+    .verdict-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px dashed #CC9999;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      font-family: Arial, sans-serif;
+    }
+
+    .verdict-title-tag {
+      color: #666;
+      font-size: 12px;
+    }
+
+    .verdict-badge {
+      display: inline-block;
+      font-family: "Impact", "Arial Black", "PingFang SC", sans-serif;
+      font-size: 32px;
+      padding: 4px 18px;
+      border-radius: 4px;
+      color: #FFFFFF;
+      text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    .verdict-badge.red {
+      background-color: #CC0000;
+      border: 2px solid #880000;
+    }
+    .verdict-badge.green {
+      background-color: #1A8A2E;
+      border: 2px solid #0D5018;
+    }
+    .verdict-badge.gold {
+      background-color: #C67800;
+      border: 2px solid #8B4500;
+    }
+
+    .verdict-score-meter {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
+      font-family: "Impact", Arial, sans-serif;
+      font-size: 34px;
+      color: #CC0000;
+      margin-bottom: 8px;
+    }
+    .verdict-score-meter span.denom {
+      font-size: 18px;
+      color: #777;
+    }
+
+    .verdict-speech {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #222222;
+      background: #FDF9E8;
+      border-left: 4px solid #CC0000;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      font-family: "Songti SC", "SimSun", serif;
+    }
+
+    .verdict-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+
+    /* 探索分类与精选导航 (Areas of Interest) */
+    .content-matrix {
+      background-color: #FAF4B6;
+      border: 2px solid;
+      border-color: #DFDFDF #808080 #808080 #DFDFDF;
+      padding: 16px;
+      margin-bottom: 18px;
+      box-shadow: 1px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+
+    .column-title {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 15px;
+      font-weight: bold;
+      color: #000000;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #C8BE80;
+      padding-bottom: 4px;
+    }
+
+    .links-subgrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px 16px;
+      list-style: none;
+    }
+
+    .links-subgrid li a {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      font-weight: bold;
+      display: inline-block;
+      padding: 2px 0;
+    }
+
+    .tag-note {
+      font-size: 11px;
+      font-weight: normal;
+      color: #666;
+    }
+
+    .destinations-list {
+      list-style-type: square;
+      padding-left: 18px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+    }
+    .destinations-list li {
+      margin-bottom: 6px;
+    }
+    .destinations-list a {
+      font-weight: bold;
+    }
+
+    /* 底部复古 468x60 广告位 (Retro Banner) */
+    .ad-banner-frame {
+      border: 2px solid #000066;
+      background: #FFFFFF;
+      padding: 8px 16px;
+      margin: 20px auto 10px auto;
+      max-width: 680px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
+    }
+
+    .ad-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ad-star {
+      color: #CC0000;
+      font-size: 26px;
+      animation: blinkStar 1.2s infinite ease-in-out;
+    }
+
+    @keyframes blinkStar {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.8); }
+    }
+
+    .ad-headline {
+      font-family: "Impact", "Arial Black", sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.5px;
+      color: #0000CC;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .ad-subtext {
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      color: #555555;
+    }
+
+    .ad-contact-link {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      color: #0000CC;
+      white-space: nowrap;
+      border-left: 1px solid #CCC;
+      padding-left: 14px;
+    }
+
+    /* 弹窗通用样式 (Retro Dialog Box) */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .win-dialog {
+      background: #ECE9D8;
+      border: 3px solid;
+      border-color: #FFFFFF #404040 #404040 #FFFFFF;
+      box-shadow: 4px 4px 12px rgba(0,0,0,0.5);
+      width: 520px;
+      max-width: 92vw;
+      font-family: Arial, "PingFang SC", sans-serif;
+    }
+
+    .dialog-titlebar {
+      background: linear-gradient(90deg, #0A246A, #A6CAF0);
+      color: #FFFFFF;
+      padding: 3px 6px;
+      font-weight: bold;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dialog-close-btn {
+      background: #D4D0C8;
+      border: 1px solid;
+      border-color: #FFFFFF #404040 #404040 #FFFFFF;
+      font-size: 11px;
+      line-height: 1;
+      width: 16px;
+      height: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: bold;
+      color: #000;
+    }
+    .dialog-close-btn:active {
+      border-color: #404040 #FFFFFF #FFFFFF #404040;
+    }
+
+    .dialog-body {
+      padding: 16px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .form-field {
+      margin-bottom: 12px;
+    }
+    .form-field label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 4px;
+      font-size: 12px;
+    }
+    .form-field input[type="text"],
+    .form-field input[type="password"] {
+      width: 100%;
+      padding: 6px;
+      border: 2px solid;
+      border-color: #808080 #DFDFDF #DFDFDF #808080;
+      font-size: 13px;
+      font-family: monospace;
+    }
+
+    /* 纸屑撒花画布 */
+    #confettiCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+      .header-section {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .brand-group {
+        justify-content: center;
+      }
+      .headline-group {
+        padding-right: 0;
+      }
+      .interaction-strip {
+        grid-template-columns: 1fr;
+      }
+      .matrix-grid {
+        grid-template-columns: 1fr;
+      }
+      .main-question-headline {
+        font-size: 38px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 顶部复古导航栏 -->
+  <header class="top-nav-container">
+    <a class="top-tab active" href="#home" id="tabHome">首页</a>
+    <a class="top-tab inactive" id="tabSurprise">随便抛个硬币！</a>
+    <a class="top-tab inactive" id="tabHowTo">提问指南</a>
+    <a class="top-tab inactive" id="tabApiConfig">TypeSafe 接口设置</a>
+    <a class="top-tab inactive" id="tabAbout">关于 Jev 管家</a>
+  </header>
+
+  <main class="page-wrapper">
+
+    <!-- 顶部标头区域：管家头像 + Ask Jev 徽章 + 标语 -->
+    <section class="header-section">
+      <div class="brand-group">
+        <!-- 原生精美复古 Jev 管家矢量肖像 -->
+        <svg class="jev-avatar" viewBox="0 0 140 160" xmlns="http://www.w3.org/2000/svg">
+          <!-- 头部与光头秃顶轮廓 -->
+          <path d="M45,95 C30,90 25,60 30,35 C35,12 65,8 90,12 C115,18 122,48 118,75 C115,95 100,105 80,110 Z" fill="#FFE0BD" stroke="#222" stroke-width="3"/>
+          <!-- 侧边稀疏黑发 -->
+          <path d="M28,45 C24,35 26,65 32,75 C35,65 36,55 28,45 Z" fill="#222"/>
+          <path d="M115,48 C120,40 120,68 114,80 C112,70 112,58 115,48 Z" fill="#222"/>
+          <!-- 慈祥带一丝调侃的眉毛 -->
+          <path d="M42,48 Q55,42 66,48" fill="none" stroke="#222" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M82,46 Q94,38 106,44" fill="none" stroke="#222" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- 眼睛 -->
+          <circle cx="56" cy="56" r="3.5" fill="#222"/>
+          <circle cx="92" cy="54" r="3.5" fill="#222"/>
+          <!-- 大鼻子 -->
+          <path d="M72,50 Q78,68 82,72 Q70,76 66,72" fill="#FFE0BD" stroke="#222" stroke-width="3" stroke-linejoin="round"/>
+          <!-- 标志性管家微抿微笑 -->
+          <path d="M54,88 Q74,98 94,86" fill="none" stroke="#222" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M93,85 L98,82" fill="none" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- 双下巴 -->
+          <path d="M60,98 Q74,104 88,98" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round"/>
+          <!-- 黑西装与白衬衫 -->
+          <path d="M15,160 L38,112 L102,112 L125,160 Z" fill="#1C2128" stroke="#111" stroke-width="3"/>
+          <!-- 白领口 -->
+          <polygon points="52,112 88,112 70,140" fill="#FFFFFF" stroke="#333" stroke-width="1.5"/>
+          <!-- 鲜红领带 -->
+          <polygon points="67,125 73,125 76,160 64,160" fill="#D32F2F" stroke="#9A0007" stroke-width="1.5"/>
+          <polygon points="65,123 75,123 72,130 68,130" fill="#B71C1C"/>
+        </svg>
+
+        <div class="logo-badge">
+          <div class="ask-badge-pill">
+            <span class="ask-badge-text">Ask</span>
+          </div>
+          <div class="ask-sub-text">Jev</div>
+        </div>
+      </div>
+
+      <div class="headline-group">
+        <h1 class="main-question-headline">Have a Question?</h1>
+        <div class="sub-headline-text">
+          专治内耗纠结，直接敲上问题问 <span class="sub-headline-ask">Ask!</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 中部交互带：左侧 New 徽章，右侧主搜索与决策框 -->
+    <section class="interaction-strip">
+
+      <!-- 左侧贴纸 -->
+      <aside class="badge-callout">
+        <div class="starburst-wrap">
+          <!-- 爆花黄色图标 -->
+          <svg class="starburst-icon" viewBox="0 0 100 100">
+            <polygon points="50,2 62,25 88,10 82,36 100,50 82,64 88,90 62,75 50,98 38,75 12,90 18,64 0,50 18,36 12,10 38,25" fill="#FFCC00" stroke="#CC6600" stroke-width="2.5"/>
+            <text x="50" y="58" font-family="Impact, Arial Black" font-size="22" fill="#CC0000" text-anchor="middle" font-weight="bold">NEW!</text>
+          </svg>
+          <div class="starburst-desc">
+            <strong>基于 TypeSafe Jev 模型驱动！</strong><br>
+            专为极速高保真决断调优。<br>
+            <a id="linkCheckModel">查看模型接口说明 &raquo;</a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- 右侧主控制台 -->
+      <div class="search-console">
+        <!-- 输入行与红色 Ask 按钮 -->
+        <div class="input-row">
+          <div class="search-input-wrapper">
+            <input 
+              type="text" 
+              class="search-input" 
+              id="questionInput" 
+              placeholder="例如：中午吃麻辣烫还是轻食？"
+              autocomplete="off"
+            />
+          </div>
+          <button class="ask-btn-primary" id="askBtn">Ask!</button>
+        </div>
+
+        <!-- 模式单选控制与辅助链接 -->
+        <div class="controls-row">
+          <div class="mode-radios">
+            <span>决断形式：</span>
+            <label class="mode-radio-label active-mode" id="labelYesNo">
+              <input type="radio" name="answerMode" value="yes_no" checked>
+              <strong>是 / 否 (买不买/去不去)</strong>
+            </label>
+            <label class="mode-radio-label" id="labelChoice">
+              <input type="radio" name="answerMode" value="choice">
+              <span>选一个 (中午吃啥/A或B)</span>
+            </label>
+            <label class="mode-radio-label" id="labelScore">
+              <input type="radio" name="answerMode" value="score">
+              <span>评个分 (冲动/靠谱指数)</span>
+            </label>
+          </div>
+
+          <div class="aux-links">
+            <a id="btnToggleContext">+ 补充具体背景/预算</a>
+          </div>
+        </div>
+
+        <!-- 动作行：重置、换个灵感、提问技巧 -->
+        <div class="action-links-row">
+          <div>
+            <button class="btn-win98" id="btnReset">清空重置</button>
+          </div>
+          <div>
+            <span>没有灵感？</span>
+            <a id="btnInspiration">点此随机抽一个纠结场景</a>
+          </div>
+          <div>
+            <a id="btnTips">+ 提问技巧</a>
+          </div>
+        </div>
+
+        <!-- 折叠补充背景输入区 -->
+        <div class="context-panel" id="contextPanel">
+          <label for="contextInput"><strong>补充你的顾虑、预算限制或现状（有助于 Jev 给出一针见血的建议）：</strong></label>
+          <textarea 
+            class="context-textarea" 
+            id="contextInput" 
+            placeholder="例如：这个月花呗额度快满了，最近还想攒钱考证；或者：今天虽然在控糖减脂，但是工作被批了心情很烦躁..."
+          ></textarea>
+        </div>
+
+        <!-- Jev 决断信封卡片 (加载后展开) -->
+        <div class="verdict-envelope-wrap" id="verdictEnvelope">
+          <div class="verdict-box">
+            <div class="verdict-header">
+              <span class="verdict-title-tag" id="verdictQuestionEcho">针对你的问题：...</span>
+              <span style="font-size: 11px; color: #888;">Jev 管家决策签号 #<span id="verdictSignId">2024</span></span>
+            </div>
+
+            <!-- 裁决结论大标签 -->
+            <div id="verdictBadgeContainer">
+              <div class="verdict-badge red" id="verdictBadgeText">坚决别买！</div>
+            </div>
+
+            <!-- 打分模式专用仪表 -->
+            <div id="verdictScoreContainer" style="display: none;">
+              <div class="verdict-score-meter">
+                <span id="verdictScoreNum">8</span>
+                <span class="denom">/ 10 分 (冲动预警)</span>
+              </div>
+            </div>
+
+            <!-- 老管家扎心点评 -->
+            <div class="verdict-speech" id="verdictSpeechText">
+              正在请老管家审题并组织措辞...
+            </div>
+
+            <!-- 行动与情绪闭环按钮 -->
+            <div class="verdict-actions">
+              <button class="btn-win98" id="btnAdopt" style="font-weight: bold; padding: 4px 14px; background: #FFF4D0;">
+                听老管家的，就这么办！
+              </button>
+              <button class="btn-win98" id="btnReroll">
+                我不服，再摇一次
+              </button>
+              <button class="btn-win98" id="btnCopyVerdict">
+                复制决断金句
+              </button>
+              <span id="copyNotice" style="color: #008800; font-size: 12px; display: none;">已复制到剪贴板！</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 下方兴趣探索区：对应原图 Areas of interest & Favorite destinations -->
+    <section class="content-matrix">
+      <div class="matrix-grid">
+
+        <!-- 左侧分类列表 -->
+        <div>
+          <div class="column-title">
+            随便逛逛<strong>大家常问的纠结专区</strong> (Areas of Interest)
+          </div>
+
+          <ul class="links-subgrid">
+            <li>
+              <a class="sample-topic" data-q="6000块的新手机要不要现在换？" data-mode="yes_no">
+                剁手大件 (买不买)
+              </a>
+              <span class="tag-note">- 换机、数码、奢侈品</span>
+            </li>
+            <li>
+              <a class="sample-topic" data-q="3000块的健身房年卡要不要办？" data-mode="yes_no">
+                钱包保卫 (花不花)
+              </a>
+              <span class="tag-note">- 办卡、报课、加预算</span>
+            </li>
+            <li>
+              <a class="sample-topic" data-q="买了一年没穿的羽绒服挂闲鱼还是留着？" data-mode="choice">
+                断舍离 (用不用)
+              </a>
+              <span class="tag-note">- 闲置、二手、旧物断离</span>
+            </li>
+            <li>
+              <a class="sample-topic" data-q="中午吃骨汤麻辣烫还是轻食鸡胸肉沙拉？" data-mode="choice">
+                干饭指南 (吃什么)
+              </a>
+              <span class="tag-note">- 外卖、堂食、纠结选择</span>
+            </li>
+            <li>
+              <a class="sample-topic" data-q="周五晚上部门自费聚餐去不去？" data-mode="yes_no">
+                社交防耗 (去不去)
+              </a>
+              <span class="tag-note">- 团建、前同事饭局、人情</span>
+            </li>
+            <li>
+              <a class="sample-topic" data-q="冲动想辞职去摆摊卖咖啡靠谱度打分" data-mode="score">
+                冲动诊断 (评个分)
+              </a>
+              <span class="tag-note">- 脑热想法、1至10分评估</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 右侧精选导航 -->
+        <div>
+          <div class="column-title">
+            Jev 推荐目的地 (Destinations):
+          </div>
+
+          <ul class="destinations-list">
+            <li><a id="linkAboutJev">认识 Jev 老管家</a></li>
+            <li><a id="linkApiDoc">TypeSafe Jev 模型接入规范</a></li>
+            <li><a id="linkCoinPlay">赛博硬币两难决断法</a></li>
+            <li><a id="linkGoldenQuotes">治好精神内耗的 50 句语录</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 底部复古 468x60 经典横幅广告位 -->
+    <aside class="ad-banner-frame">
+      <div class="ad-left">
+        <span class="ad-star">&#9733;</span>
+        <div>
+          <div class="ad-headline" id="adBannerClick">ADVERTISE HERE! 广告位招租！</div>
+          <div class="ad-subtext">专治选择困难、纠结内耗。你的横幅可以挂在这里！</div>
+        </div>
+      </div>
+      <div class="ad-contact-link">
+        <a id="linkAdContact">联系管家 &raquo;</a>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- 纸屑撒花画布 (用于听取管家意见后的心理强化动效) -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- 模态弹窗 1：TypeSafe 接口配置 -->
+  <div class="modal-overlay" id="modalApi">
+    <div class="win-dialog">
+      <div class="dialog-titlebar">
+        <span>TypeSafe Jev 后端接口设置</span>
+        <button class="dialog-close-btn" data-close="modalApi">X</button>
+      </div>
+      <div class="dialog-body">
+        <p style="margin-bottom: 12px; color: #333;">
+          配置后端 TypeSafe Jev 模型服务。系统优先调用该接口；若未配置或处于离线模式，自动启用高拟真 Jev 本地推理引擎。
+        </p>
+        <div class="form-field">
+          <label for="inputApiEndpoint">API Endpoint 地址 (POST)：</label>
+          <input type="text" id="inputApiEndpoint" placeholder="https://your-domain.com/api/jev/decide">
+        </div>
+        <div class="form-field">
+          <label for="inputApiKey">API Key (可选 Bearer Token)：</label>
+          <input type="password" id="inputApiKey" placeholder="typesafe_jev_sk_...">
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px;">
+          <button class="btn-win98" id="btnTestApi">测试连通性</button>
+          <button class="btn-win98" id="btnSaveApi" style="font-weight: bold;">保存设置</button>
+        </div>
+        <div id="apiStatusMessage" style="margin-top: 8px; font-size: 12px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 模态弹窗 2：提问指南 -->
+  <div class="modal-overlay" id="modalHowTo">
+    <div class="win-dialog">
+      <div class="dialog-titlebar">
+        <span>向 Jev 管家提问的心法指南</span>
+        <button class="dialog-close-btn" data-close="modalHowTo">X</button>
+      </div>
+      <div class="dialog-body">
+        <p><strong>1. 是/否模式 (Yes / No)</strong></p>
+        <p style="color: #444; margin-bottom: 8px;">提出明确的动词疑问：比如“要不要买”、“去不去”、“留不留”。越干脆，管家给出的裁决越有力。</p>
+        
+        <p><strong>2. 选一个模式 (Choice)</strong></p>
+        <p style="color: #444; margin-bottom: 8px;">在问题中使用“还是”、“或者”隔开候选项目（如“吃麦当劳还是老乡鸡”），管家会自动提炼选项并挑出最优解。</p>
+
+        <p><strong>3. 评个分模式 (Score)</strong></p>
+        <p style="color: #444; margin-bottom: 8px;">输入你脑海中的冲动念头（如“想换工作去摆摊”），管家会评估冲动系数和后悔概率（1至10分）。</p>
+        
+        <div style="text-align: right; margin-top: 12px;">
+          <button class="btn-win98" data-close="modalHowTo">领悟了</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 模态弹窗 3：关于 Jev 管家 -->
+  <div class="modal-overlay" id="modalAbout">
+    <div class="win-dialog">
+      <div class="dialog-titlebar">
+        <span>关于 Jev 老管家</span>
+        <button class="dialog-close-btn" data-close="modalAbout">X</button>
+      </div>
+      <div class="dialog-body">
+        <p><strong>Jev 是谁？</strong></p>
+        <p style="margin-bottom: 8px;">
+          Jev 致敬了 90 年代互联网经典管家形象（Ask Jeeves）。在这个信息严重过载、每个人都在买不买与吃什么之间内耗的时代，Jev 专治各种无意义纠结。
+        </p>
+        <p><strong>技术内核：</strong></p>
+        <p style="margin-bottom: 8px;">
+          前端由复古 Web 1.0 纯净架构构建，后端接入 TypeSafe 最近推出的专有 Jev 决策模型，兼具超高响应速度与犀利结构化输出。
+        </p>
+        <div style="text-align: right; margin-top: 12px;">
+          <button class="btn-win98" data-close="modalAbout">关 闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       问问 Jev 前端逻辑实现
+       严格遵守编码纪律：
+       1. IME 输入法 Enter 键防护 (compositionstart / compositionend)
+       2. 全路径事件闭环
+       3. 双引擎支持：TypeSafe 后端 API + 本地高拟真 Jev 知识库
+       ========================================================================== */
+
+    // 本土化高频纠结场景库 (中国大陆高频生活与消费场景)
+    const INSPIRATION_LIBRARY = [
+      { q: "6000块的苹果新机现在买不买？", mode: "yes_no", context: "手头的iPhone 13电池健康81%，还能凑合用。" },
+      { q: "中午吃骨汤麻辣烫还是轻食鸡胸肉沙拉？", mode: "choice", context: "最近在控糖减脂，但是今天上午加班心情烦闷。" },
+      { q: "周五下班部门聚餐去不去？", mode: "yes_no", context: "AA制每人150元，主要是听领导吹牛，周六还想早起跑步。" },
+      { q: "3000块的健身房年卡要不要办？", mode: "yes_no", context: "离家800米，过去两年办的卡平均一年只去了三次。" },
+      { q: "买了一年没穿的呢子大衣要不要挂闲鱼？", mode: "yes_no", context: "原价1200买的，挂闲鱼估计只能卖150，觉得亏。" },
+      { q: "晚上喝一杯全糖热奶茶罪恶一下？", mode: "yes_no", context: "今天走了12000步，刚刚改完方案。" },
+      { q: "冲动想辞职去大理租个院子摆摊卖手冲", mode: "score", context: "存款大概够支撑6个月生活，没有摆摊经验。" },
+      { q: "周末自驾去露营还是宅在家里打游戏？", mode: "choice", context: "天气预报多云微风，但是平时上班已经很累了。" },
+      { q: "前同事下周结婚要不要随500块礼金？", mode: "yes_no", context: "在上一家公司共事一年半，离职后大半年没说过话。" },
+      { q: "戴森洗地机有必要买吗？", mode: "yes_no", context: "家里主要是地板，平时用普通扫把和拖把，感觉有点累。" }
+    ];
+
+    // 本地 Jev 老管家智能推演库 (用于无网走查与离线演示)
+    const LOCAL_JEV_BRAIN = {
+      yes_no: [
+        {
+          triggers: ["买", "入", "换", "购", "苹果", "手机", "相机", "耳机"],
+          verdict: "坚决别买！",
+          tag: "理智保卫",
+          badgeClass: "red",
+          reason: "你现在强烈的渴望其实源于生活枯燥带来的冲动消费欲。你以前买来吃灰的大件还在墙角落灰。先加入购物车放满7天，7天后你大概率连它是啥都忘了。把钱留在兜里带来的安全感，远胜拆快递那10分钟的虚假多巴胺。"
+        },
+        {
+          triggers: ["卡", "课", "健身", "培训", "会员"],
+          verdict: "千万别办！",
+          tag: "避坑指南",
+          badgeClass: "red",
+          reason: "指望通过一次性付费来购买自律，是消费主义最温柔的陷阱。过去办的年卡平均单次成本已经突破天际。真想练，先坚持连续两周每天下楼快走30分钟，做到了再去谈办卡。"
+        },
+        {
+          triggers: ["聚餐", "团建", "去不去", "参加", "婚礼", "饭局", "聚会"],
+          verdict: "果断别去！",
+          tag: "拒绝内耗",
+          badgeClass: "red",
+          reason: "凡是让你在去之前就感到犹豫拉扯的社交，90%去了都是如坐针毡。消耗两小时宝贵周末去迎合尴尬的客套，周一上班会加倍疲倦。果断礼貌找个借口推掉，宅家享受独处时光更香。"
+        },
+        {
+          triggers: ["扔", "闲鱼", "卖", "断舍离", "留"],
+          verdict: "立刻挂闲鱼！",
+          tag: "断舍离",
+          badgeClass: "green",
+          reason: "如果一件东西超过半年没碰过，它在你的生活里就已经死亡了。不肯放手只是在为过去的沉没成本买单。变现成哪怕几十块钱的现金，都比让它在屋里白占一平米几万块的空间划算得多。"
+        },
+        {
+          triggers: ["吃", "喝", "奶茶", "夜宵", "犒劳"],
+          verdict: "果断冲一单！",
+          tag: "心理抚慰",
+          badgeClass: "green",
+          reason: "管家看你今天已经被生活折磨得够呛了。偶尔一杯奶茶或一顿夜宵毁不掉你的健康，但紧绷到极限的心态一定会拖垮你的精力。去买少糖少冰的，喝完今晚好好睡一觉！"
+        }
+      ],
+      choice: [
+        {
+          triggers: ["麻辣烫", "沙拉", "轻食"],
+          verdict: "去吃麻辣烫！",
+          tag: "实事求是",
+          badgeClass: "gold",
+          reason: "心情不好的时候硬逼自己嚼干瘪无味的生冷菜叶，下午大概率会因为心理空虚而报复性狂点高热量零食。去吃一碗骨汤麻辣烫，多涮白菜、香菇和牛肉，少放红油麻酱，兼顾抚慰与健康。"
+        },
+        {
+          triggers: ["外卖", "下楼", "食堂"],
+          verdict: "起身下楼吃！",
+          tag: "打破僵化",
+          badgeClass: "gold",
+          reason: "你在工位上坐了一上午，血液都快凝固了。下楼走那两百米晒晒太阳吹吹风，哪怕只是去便利店买个便当，也能让大脑从工作死循环里重启出来。"
+        },
+        {
+          triggers: ["露营", "宅", "游戏"],
+          verdict: "宅家打游戏！",
+          tag: "舒适优先",
+          badgeClass: "gold",
+          reason: "露营准备装备两小时、扎营收帐篷三小时，回来洗车洗垫子还要一天。现在的你最缺的是无需向任何人证明的彻底放松。拉上窗帘，打开游戏，给身心做一次真正的减负。"
+        }
+      ],
+      score: [
+        {
+          triggers: ["辞职", "摆摊", "大理", "开店"],
+          score: 8,
+          verdict: "冲动指数 8 分",
+          tag: "极高风险",
+          badgeClass: "red",
+          reason: "把对当下工作的厌倦投射到风花雪月的摆摊创业上，是最常见的逃避陷阱。摆摊同样有城管、日晒雨淋和入不敷出。管家建议：先把摆摊当成周末副业试水两次，赚到第一张百元大钞再谈辞职。"
+        },
+        {
+          triggers: ["买", "换", "消费"],
+          score: 9,
+          verdict: "后悔概率 90%",
+          tag: "冲动预警",
+          badgeClass: "red",
+          reason: "这个消费决策完全由即时情绪主导。买完之后的新鲜感只能维持48小时，而账单的分期还款却要持续整整一年。管家建议立省100%。"
+        }
+      ]
+    };
+
+    // DOM 元素引用
+    const questionInput = document.getElementById("questionInput");
+    const askBtn = document.getElementById("askBtn");
+    const btnReset = document.getElementById("btnReset");
+    const btnInspiration = document.getElementById("btnInspiration");
+    const btnToggleContext = document.getElementById("btnToggleContext");
+    const contextPanel = document.getElementById("contextPanel");
+    const contextInput = document.getElementById("contextInput");
+    const btnTips = document.getElementById("btnTips");
+
+    const modeRadios = document.querySelectorAll('input[name="answerMode"]');
+    const labelYesNo = document.getElementById("labelYesNo");
+    const labelChoice = document.getElementById("labelChoice");
+    const labelScore = document.getElementById("labelScore");
+
+    const verdictEnvelope = document.getElementById("verdictEnvelope");
+    const verdictQuestionEcho = document.getElementById("verdictQuestionEcho");
+    const verdictBadgeContainer = document.getElementById("verdictBadgeContainer");
+    const verdictBadgeText = document.getElementById("verdictBadgeText");
+    const verdictScoreContainer = document.getElementById("verdictScoreContainer");
+    const verdictScoreNum = document.getElementById("verdictScoreNum");
+    const verdictSpeechText = document.getElementById("verdictSpeechText");
+    const verdictSignId = document.getElementById("verdictSignId");
+
+    const btnAdopt = document.getElementById("btnAdopt");
+    const btnReroll = document.getElementById("btnReroll");
+    const btnCopyVerdict = document.getElementById("btnCopyVerdict");
+    const copyNotice = document.getElementById("copyNotice");
+
+    // 模态弹窗相关
+    const modalApi = document.getElementById("modalApi");
+    const modalHowTo = document.getElementById("modalHowTo");
+    const modalAbout = document.getElementById("modalAbout");
+    const inputApiEndpoint = document.getElementById("inputApiEndpoint");
+    const inputApiKey = document.getElementById("inputApiKey");
+    const btnSaveApi = document.getElementById("btnSaveApi");
+    const btnTestApi = document.getElementById("btnTestApi");
+    const apiStatusMessage = document.getElementById("apiStatusMessage");
+
+    // 顶部与底部链接
+    const tabSurprise = document.getElementById("tabSurprise");
+    const tabHowTo = document.getElementById("tabHowTo");
+    const tabApiConfig = document.getElementById("tabApiConfig");
+    const tabAbout = document.getElementById("tabAbout");
+    const linkCheckModel = document.getElementById("linkCheckModel");
+    const linkAboutJev = document.getElementById("linkAboutJev");
+    const linkApiDoc = document.getElementById("linkApiDoc");
+    const linkCoinPlay = document.getElementById("linkCoinPlay");
+    const linkGoldenQuotes = document.getElementById("linkGoldenQuotes");
+    const adBannerClick = document.getElementById("adBannerClick");
+    const linkAdContact = document.getElementById("linkAdContact");
+
+    // 状态管理
+    let isComposing = false; // 中文输入法防打断
+    let currentMode = "yes_no";
+    let lastQuery = "";
+
+    // 从 localStorage 加载接口配置
+    const STORAGE_KEY_ENDPOINT = "ask_jev_api_endpoint";
+    const STORAGE_KEY_KEY = "ask_jev_api_key";
+    inputApiEndpoint.value = localStorage.getItem(STORAGE_KEY_ENDPOINT) || "";
+    inputApiKey.value = localStorage.getItem(STORAGE_KEY_KEY) || "";
+
+    /* --------------------------------------------------------------------------
+       输入法防护与键盘事件处理
+       -------------------------------------------------------------------------- */
+    questionInput.addEventListener("compositionstart", () => { isComposing = true; });
+    questionInput.addEventListener("compositionend", () => { isComposing = false; });
+
+    questionInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !isComposing && !e.isComposing && e.keyCode !== 229) {
+        e.preventDefault();
+        performJevDecision();
+      }
+    });
+
+    // 模式切换监听
+    modeRadios.forEach(radio => {
+      radio.addEventListener("change", (e) => {
+        currentMode = e.target.value;
+        updateModeLabelStyles();
+        updateInputPlaceholder();
+      });
+    });
+
+    function updateModeLabelStyles() {
+      labelYesNo.classList.toggle("active-mode", currentMode === "yes_no");
+      labelChoice.classList.toggle("active-mode", currentMode === "choice");
+      labelScore.classList.toggle("active-mode", currentMode === "score");
+    }
+
+    function updateInputPlaceholder() {
+      if (currentMode === "yes_no") {
+        questionInput.placeholder = "例如：6000块的苹果新机现在买不买？或：周六团建去不去？";
+      } else if (currentMode === "choice") {
+        questionInput.placeholder = "例如：中午吃麻辣烫还是赛百味？或：去大理还是留在家里？";
+      } else if (currentMode === "score") {
+        questionInput.placeholder = "例如：冲动想辞职去摆摊卖手冲咖啡靠谱度评估";
+      }
+    }
+
+    // 补充背景折叠
+    btnToggleContext.addEventListener("click", () => {
+      contextPanel.classList.toggle("show");
+      if (contextPanel.classList.contains("show")) {
+        btnToggleContext.textContent = "- 收起补充背景";
+        contextInput.focus();
+      } else {
+        btnToggleContext.textContent = "+ 补充具体背景/预算";
+      }
+    });
+
+    // 清空重置
+    btnReset.addEventListener("click", () => {
+      questionInput.value = "";
+      contextInput.value = "";
+      verdictEnvelope.classList.remove("visible");
+      questionInput.focus();
+    });
+
+    // 灵感抽取
+    btnInspiration.addEventListener("click", () => {
+      const pick = INSPIRATION_LIBRARY[Math.floor(Math.random() * INSPIRATION_LIBRARY.length)];
+      questionInput.value = pick.q;
+      contextInput.value = pick.context;
+      currentMode = pick.mode;
+      const targetRadio = document.querySelector(`input[name="answerMode"][value="${pick.mode}"]`);
+      if (targetRadio) targetRadio.checked = true;
+      updateModeLabelStyles();
+      updateInputPlaceholder();
+      if (!contextPanel.classList.contains("show")) {
+        contextPanel.classList.add("show");
+        btnToggleContext.textContent = "- 收起补充背景";
+      }
+    });
+
+    // 场景矩阵词条点击自动填充
+    document.querySelectorAll(".sample-topic").forEach(item => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        const q = item.getAttribute("data-q");
+        const mode = item.getAttribute("data-mode");
+        questionInput.value = q;
+        currentMode = mode;
+        const targetRadio = document.querySelector(`input[name="answerMode"][value="${mode}"]`);
+        if (targetRadio) targetRadio.checked = true;
+        updateModeLabelStyles();
+        updateInputPlaceholder();
+        performJevDecision();
+        window.scrollTo({ top: 180, behavior: "smooth" });
+      });
+    });
+
+    /* --------------------------------------------------------------------------
+       核心决策提交流程 (支持 TypeSafe 真实 API 与本地推理双引擎)
+       -------------------------------------------------------------------------- */
+    askBtn.addEventListener("click", () => {
+      performJevDecision();
+    });
+
+    async function performJevDecision() {
+      const question = questionInput.value.trim();
+      if (!question) {
+        alert("请在输入框中敲入你想问 Jev 的纠结题目！");
+        questionInput.focus();
+        return;
+      }
+
+      const context = contextInput.value.trim();
+      lastQuery = question;
+
+      // 视觉状态：置忙
+      askBtn.disabled = true;
+      askBtn.textContent = "审题中...";
+      verdictEnvelope.classList.remove("visible");
+
+      // 检查是否有配置后端 API
+      const endpoint = (localStorage.getItem(STORAGE_KEY_ENDPOINT) || "").trim();
+      const apiKey = (localStorage.getItem(STORAGE_KEY_KEY) || "").trim();
+
+      try {
+        let result = null;
+        if (endpoint) {
+          // 调用 TypeSafe Jev 真实后端接口
+          result = await callTypeSafeJevApi(endpoint, apiKey, question, currentMode, context);
+        } else {
+          // 本地老管家推演引擎
+          await new Promise(r => setTimeout(r, 450)); // 模拟思考延迟
+          result = inferLocalJev(question, currentMode, context);
+        }
+
+        renderVerdict(question, result);
+      } catch (err) {
+        console.warn("远程接口调用未成功，平滑降级至本地 Jev 推理引擎:", err);
+        const fallbackResult = inferLocalJev(question, currentMode, context);
+        renderVerdict(question, fallbackResult);
+      } finally {
+        askBtn.disabled = false;
+        askBtn.textContent = "Ask!";
+      }
+    }
+
+    // 调用 TypeSafe 后端标准契约
+    async function callTypeSafeJevApi(endpoint, apiKey, question, mode, context) {
+      const payload = {
+        question: question,
+        mode: mode,
+        context: context || undefined,
+        timestamp: Date.now()
+      };
+
+      const headers = { "Content-Type": "application/json" };
+      if (apiKey) {
+        headers["Authorization"] = `Bearer ${apiKey}`;
+      }
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP Error: ${response.status}`);
+      }
+
+      const resJson = await response.json();
+      return resJson.data || resJson;
+    }
+
+    // 本地推理引擎逻辑
+    function inferLocalJev(question, mode, context) {
+      const cleanQ = question.toLowerCase();
+      const sign = Math.floor(1000 + Math.random() * 9000);
+
+      if (mode === "yes_no") {
+        for (const item of LOCAL_JEV_BRAIN.yes_no) {
+          if (item.triggers.some(t => cleanQ.includes(t))) {
+            return {
+              verdict: item.verdict,
+              verdictTag: item.tag,
+              badgeClass: item.badgeClass,
+              reasoning: item.reason,
+              signId: sign
+            };
+          }
+        }
+        // 默认 Yes/No 兜底裁决
+        const isYes = Math.random() > 0.55;
+        return {
+          verdict: isYes ? "果断去办！" : "坚决别干！",
+          verdictTag: isYes ? "机不可失" : "劝退止损",
+          badgeClass: isYes ? "green" : "red",
+          reasoning: isYes
+            ? "你纠结这么久，说明内心深处其实早已想做，只是缺临门一脚的勇气。去办吧，哪怕结果不完美，也比日后不断反刍遗憾更有生命力。"
+            : "真正值得做的事你早就兴奋地开工了，绝不会拖到现在到处找人问。现在的不甘心只是沉没成本在作祟。立刻停下，去干点真正让自己踏实的正事。",
+          signId: sign
+        };
+      } 
+      else if (mode === "choice") {
+        for (const item of LOCAL_JEV_BRAIN.choice) {
+          if (item.triggers.some(t => cleanQ.includes(t))) {
+            return {
+              verdict: item.verdict,
+              verdictTag: item.tag,
+              badgeClass: item.badgeClass,
+              reasoning: item.reason,
+              signId: sign
+            };
+          }
+        }
+        // 从“还是”或者“或者”切分选项
+        const parts = question.split(/还是|或者|vs|VS|\/|、/);
+        let chosen = "第一项";
+        if (parts.length >= 2) {
+          chosen = parts[Math.floor(Math.random() * parts.length)].trim();
+        }
+        return {
+          verdict: `首选：${chosen}！`,
+          verdictTag: "最优解",
+          badgeClass: "gold",
+          reasoning: `综合你的现状，选「${chosen}」在当下带来的情绪价值与决策确定感最高。不要再滑动屏幕比来比去了，听管家的，直接定下来！`,
+          signId: sign
+        };
+      } 
+      else { // score
+        const scoreVal = Math.floor(Math.random() * 5) + 6; // 6到10分
+        return {
+          verdict: `冲动指数 ${scoreVal} 分`,
+          score: scoreVal,
+          verdictTag: "冲动预警",
+          badgeClass: "red",
+          reasoning: "经过老管家多维度心理推演，你当下的念头冲动成分占了绝大部分。这往往是压力过载时的应激性幻想。先让自己深呼吸三分钟，把计划写在纸上睡一觉再看。",
+          signId: sign
+        };
+      }
+    }
+
+    // 渲染结果到信封卡片
+    function renderVerdict(question, data) {
+      verdictQuestionEcho.textContent = `针对你的提问：「${question}」`;
+      verdictSignId.textContent = data.signId || Math.floor(1000 + Math.random() * 9000);
+
+      if (data.score !== undefined && data.score !== null) {
+        verdictBadgeContainer.style.display = "none";
+        verdictScoreContainer.style.display = "block";
+        verdictScoreNum.textContent = data.score;
+      } else {
+        verdictScoreContainer.style.display = "none";
+        verdictBadgeContainer.style.display = "block";
+        verdictBadgeText.textContent = data.verdict;
+        verdictBadgeText.className = `verdict-badge ${data.badgeClass || 'red'}`;
+      }
+
+      verdictSpeechText.textContent = data.reasoning;
+      verdictEnvelope.classList.add("visible");
+      copyNotice.style.display = "none";
+    }
+
+    /* --------------------------------------------------------------------------
+       结果卡片闭环交互：听管家的、再摇一次、复制金句
+       -------------------------------------------------------------------------- */
+    btnAdopt.addEventListener("click", () => {
+      triggerConfetti();
+      alert("老管家欣慰地为你点赞！决策已锁定，内耗已终止，去行动吧！");
+    });
+
+    btnReroll.addEventListener("click", () => {
+      performJevDecision();
+    });
+
+    btnCopyVerdict.addEventListener("click", () => {
+      const textToCopy = `【问问Jev管家裁决】\n问题：${lastQuery}\n裁决：${verdictBadgeText.textContent}\n点评：${verdictSpeechText.textContent}`;
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        copyNotice.style.display = "inline";
+        setTimeout(() => { copyNotice.style.display = "none"; }, 3000);
+      }).catch(() => {
+        alert("已复制：" + textToCopy);
+      });
+    });
+
+    /* --------------------------------------------------------------------------
+       弹窗与导航交互闭环
+       -------------------------------------------------------------------------- */
+    function openModal(modalEl) {
+      modalEl.classList.add("open");
+    }
+    function closeModal(modalEl) {
+      modalEl.classList.remove("open");
+    }
+
+    // 顶部 tab
+    tabSurprise.addEventListener("click", () => {
+      btnInspiration.click();
+      performJevDecision();
+    });
+    tabHowTo.addEventListener("click", () => openModal(modalHowTo));
+    tabApiConfig.addEventListener("click", () => openModal(modalApi));
+    tabAbout.addEventListener("click", () => openModal(modalAbout));
+
+    // 链接呼起弹窗
+    btnTips.addEventListener("click", () => openModal(modalHowTo));
+    linkCheckModel.addEventListener("click", () => openModal(modalApi));
+    linkAboutJev.addEventListener("click", () => openModal(modalAbout));
+    linkApiDoc.addEventListener("click", () => openModal(modalApi));
+    linkCoinPlay.addEventListener("click", () => {
+      alert("【赛博硬币决断法】：当你在两件事情之间摇摆不定时，把它交给抛硬币并不是为了看硬币正反面，而是在硬币抛在空中的那一瞬间，你的心里其实已经知道自己渴望哪一面。问问Jev正是帮你把这个声音直接放大！");
+    });
+    linkGoldenQuotes.addEventListener("click", () => {
+      alert("【管家金句】：\n1. 能用几十块钱解决的问题，不要消耗几小时情绪。\n2. 想做的事情不会犹豫，犹豫的事情大概率不值得做。\n3. 买前冷静七天，立省百分之百。");
+    });
+
+    // 广告位点击彩蛋
+    adBannerClick.addEventListener("click", () => {
+      alert("感谢关注！欢迎在各类社群向朋友安利【问问Jev】生活微决策决断机！");
+    });
+    linkAdContact.addEventListener("click", () => {
+      alert("商务联系：请联系 Jev 管家团队，我们将继续迭代更多好玩的 AI 决策体验！");
+    });
+
+    // 关闭弹窗按钮
+    document.querySelectorAll("[data-close]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-close");
+        closeModal(document.getElementById(id));
+      });
+    });
+
+    // 点击蒙层关闭
+    [modalApi, modalHowTo, modalAbout].forEach(modal => {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal(modal);
+      });
+    });
+
+    // 保存 API 设置
+    btnSaveApi.addEventListener("click", () => {
+      const ep = inputApiEndpoint.value.trim();
+      const k = inputApiKey.value.trim();
+      localStorage.setItem(STORAGE_KEY_ENDPOINT, ep);
+      localStorage.setItem(STORAGE_KEY_KEY, k);
+      apiStatusMessage.style.color = "#008800";
+      apiStatusMessage.textContent = ep ? "已成功保存后端 API 配置！后续提问将直接调用该服务。" : "已清空 API 配置，系统将使用本地高拟真推理引擎。";
+      setTimeout(() => { closeModal(modalApi); }, 1200);
+    });
+
+    // 测试 API 连通性
+    btnTestApi.addEventListener("click", async () => {
+      const ep = inputApiEndpoint.value.trim();
+      if (!ep) {
+        apiStatusMessage.style.color = "#CC0000";
+        apiStatusMessage.textContent = "请先输入 Endpoint 地址！";
+        return;
+      }
+      apiStatusMessage.style.color = "#444";
+      apiStatusMessage.textContent = "正在探测接口连通性...";
+      try {
+        const res = await fetch(ep, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: "PING_TEST", mode: "yes_no" })
+        });
+        if (res.ok) {
+          apiStatusMessage.style.color = "#008800";
+          apiStatusMessage.textContent = `连通成功！(HTTP ${res.status})`;
+        } else {
+          apiStatusMessage.style.color = "#CC0000";
+          apiStatusMessage.textContent = `接口返回错误码：${res.status}`;
+        }
+      } catch (err) {
+        apiStatusMessage.style.color = "#CC0000";
+        apiStatusMessage.textContent = `无法连接至该地址：${err.message}`;
+      }
+    });
+
+    /* --------------------------------------------------------------------------
+       原生全屏五彩纸屑撒花特效 (无需任何第三方 npm 依赖)
+       -------------------------------------------------------------------------- */
+    function triggerConfetti() {
+      const canvas = document.getElementById("confettiCanvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const confettiPieces = [];
+      const colors = ["#CC0000", "#FFCC00", "#00AA00", "#0066FF", "#FF6600", "#9900CC"];
+
+      for (let i = 0; i < 90; i++) {
+        confettiPieces.push({
+          x: window.innerWidth / 2,
+          y: window.innerHeight / 2,
+          w: Math.random() * 10 + 6,
+          h: Math.random() * 6 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          vx: (Math.random() - 0.5) * 18,
+          vy: (Math.random() - 0.5) * 18 - 4,
+          rotation: Math.random() * 360,
+          rotationSpeed: (Math.random() - 0.5) * 12,
+          opacity: 1
+        });
+      }
+
+      let frameCount = 0;
+      function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let active = false;
+
+        confettiPieces.forEach(p => {
+          if (p.opacity > 0.02) {
+            active = true;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.35; // 重力
+            p.vx *= 0.98; // 阻力
+            p.rotation += p.rotationSpeed;
+            p.opacity -= 0.012;
+
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rotation * Math.PI) / 180);
+            ctx.globalAlpha = Math.max(0, p.opacity);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.restore();
+          }
+        });
+
+        frameCount++;
+        if (active && frameCount < 180) {
+          requestAnimationFrame(render);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      render();
+    }
+  </script>
+</body>
+</html>
