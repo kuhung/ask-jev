@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { X, ExternalLink } from 'lucide-react';
 
 interface ApiSettingsModalProps {
   isOpen: boolean;
@@ -12,14 +12,18 @@ export const ApiSettingsModal: React.FC<ApiSettingsModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [endpoint, setEndpoint] = useState('');
+  const [endpoint, setEndpoint] = useState('https://api.typesafe.ai/v1/systemone');
   const [apiKey, setApiKey] = useState('');
   const [statusMsg, setStatusMsg] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isTesting, setIsTesting] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setEndpoint(localStorage.getItem('ask_jev_api_endpoint') || '');
+      const savedEndpoint = localStorage.getItem('ask_jev_api_endpoint');
+      if (savedEndpoint) {
+        setEndpoint(savedEndpoint);
+      }
       setApiKey(localStorage.getItem('ask_jev_api_key') || '');
     }
   }, [isOpen]);
@@ -32,45 +36,62 @@ export const ApiSettingsModal: React.FC<ApiSettingsModalProps> = ({
       localStorage.setItem('ask_jev_api_key', apiKey.trim());
       setIsSuccess(true);
       setStatusMsg(
-        endpoint.trim()
-          ? '已保存远程 API 配置！提问时将优先调用该服务。'
-          : '已清空远程配置，系统将采用内置高拟真推演引擎。'
+        apiKey.trim()
+          ? '已保存配置！生产环境建议直接在 Vercel 后台配置 TYPESAFE_JEV_API_KEY。'
+          : '已清空 Key，系统将采用内置高拟真推演引擎。'
       );
       setTimeout(() => {
         onClose();
         setStatusMsg('');
-      }, 1200);
+      }, 1500);
     }
   };
 
   const handleTest = async () => {
-    if (!endpoint.trim()) {
+    if (!apiKey.trim()) {
       setIsSuccess(false);
-      setStatusMsg('请先填写 Endpoint 地址！');
+      setStatusMsg('请先输入 TypeSafe API Key！');
       return;
     }
-    setStatusMsg('正在探测接口连通性...');
+
+    setIsTesting(true);
+    setStatusMsg('正在向 TypeSafe 官方接口发送测试评估...');
     setIsSuccess(false);
 
     try {
+      // 发送符合 TypeSafe 官方规范的最小 Noul 请求
       const res = await fetch(endpoint.trim(), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          ...(apiKey.trim() ? { Authorization: `Bearer ${apiKey.trim()}` } : {}),
+          'Authorization': `Bearer ${apiKey.trim()}`,
         },
-        body: JSON.stringify({ question: 'PING', mode: 'yes_no' }),
+        body: JSON.stringify({
+          state: 'System connectivity verification ping',
+          model: 'jev-latest',
+          questions: {
+            test_ping: {
+              type: 'noul',
+              instructions: 'Is this system online and active?',
+            },
+          },
+        }),
       });
+
       if (res.ok) {
+        const json = await res.json();
         setIsSuccess(true);
-        setStatusMsg(`连接正常！(HTTP ${res.status})`);
+        setStatusMsg(`连接成功！TypeSafe Jev 模型已响应 (返回模型: ${json.model})`);
       } else {
         setIsSuccess(false);
-        setStatusMsg(`服务返回异常状态码：${res.status}`);
+        const errText = await res.text();
+        setStatusMsg(`接口返回异常 (${res.status}): ${errText.slice(0, 100)}`);
       }
     } catch (err: any) {
       setIsSuccess(false);
-      setStatusMsg(`无法连接至该接口：${err.message}`);
+      setStatusMsg(`网络连接失败：${err.message}`);
+    } finally {
+      setIsTesting(false);
     }
   };
 
@@ -79,7 +100,7 @@ export const ApiSettingsModal: React.FC<ApiSettingsModalProps> = ({
       <div className="bg-retroWin-gray border-[3px] border-black shadow-brutal w-full max-w-md rounded">
         {/* Titlebar */}
         <div className="bg-gradient-to-r from-blue-900 to-blue-600 text-white px-3 py-1.5 flex items-center justify-between font-bold text-xs">
-          <span>TypeSafe Jev 模型接口设置</span>
+          <span>TypeSafe 官方 System One 接口设置</span>
           <button
             type="button"
             onClick={onClose}
@@ -92,26 +113,25 @@ export const ApiSettingsModal: React.FC<ApiSettingsModalProps> = ({
         {/* Body */}
         <div className="p-4 text-xs sm:text-sm leading-relaxed text-gray-900">
           <p className="mb-3 text-gray-700">
-            当项目部署在 Vercel 时，建议直接在 Vercel 环境变量中配置 <code className="bg-gray-200 px-1 py-0.5 rounded">TYPESAFE_JEV_ENDPOINT</code>。也可在此处临时覆盖测试：
+            依据 TypeSafe 官方文档（<a href="https://docs.typesafe.ai/api" target="_blank" rel="noreferrer" className="text-blue-800 underline inline-flex items-center gap-0.5">docs.typesafe.ai/api <ExternalLink size={11} /></a>），后端请求将直接与 <code className="bg-gray-200 px-1 py-0.5 rounded font-mono">jev-latest</code> 进行结构化决策交互。
           </p>
 
           <div className="mb-3">
-            <label className="block font-bold mb-1">API Endpoint 地址 (POST)：</label>
+            <label className="block font-bold mb-1">官方 System One Endpoint：</label>
             <input
               type="text"
               className="w-full bg-white border-2 border-black p-1.5 font-mono text-xs outline-none"
-              placeholder="https://your-domain.com/api/jev"
               value={endpoint}
               onChange={(e) => setEndpoint(e.target.value)}
             />
           </div>
 
           <div className="mb-3">
-            <label className="block font-bold mb-1">API Key (可选 Bearer Token)：</label>
+            <label className="block font-bold mb-1">TypeSafe API Key：</label>
             <input
               type="password"
               className="w-full bg-white border-2 border-black p-1.5 font-mono text-xs outline-none"
-              placeholder="typesafe_sk_..."
+              placeholder="在此输入你的 TypeSafe 密钥..."
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
             />
@@ -130,10 +150,11 @@ export const ApiSettingsModal: React.FC<ApiSettingsModalProps> = ({
           <div className="flex justify-end gap-2 pt-2 border-t border-gray-300">
             <button
               type="button"
+              disabled={isTesting}
               onClick={handleTest}
-              className="bg-white border-2 border-black px-3 py-1 text-xs font-bold shadow-brutal-sm active:translate-y-0.5"
+              className="bg-white border-2 border-black px-3 py-1 text-xs font-bold shadow-brutal-sm active:translate-y-0.5 disabled:opacity-50"
             >
-              测试连通性
+              {isTesting ? '探测中...' : '测试官方连通性'}
             </button>
             <button
               type="button"
