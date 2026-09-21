@@ -49,7 +49,7 @@ export const VerdictCard: React.FC<VerdictCardProps> = ({
   };
 
   return (
-    <div className="w-full bg-cream-50 border-3 border-retroRed-800 shadow-brutal p-4 sm:p-6 rounded-md animate-fadeIn">
+    <div className="w-full bg-cream-50 border-[3px] border-retroRed-800 shadow-brutal p-4 sm:p-6 rounded-md animate-fadeIn">
       {/* 头部问题回响与签号 */}
       <div className="flex items-center justify-between border-b border-dashed border-red-300 pb-2 mb-3 text-xs text-gray-600">
         <span className="font-bold truncate max-w-[70%]">针对提问：「{question}」</span>

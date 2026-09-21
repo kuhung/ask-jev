@@ -76,7 +76,7 @@ export const ApiSettingsModal: React.FC<ApiSettingsModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-fadeIn">
-      <div className="bg-retroWin-gray border-3 border-black shadow-brutal w-full max-w-md rounded">
+      <div className="bg-retroWin-gray border-[3px] border-black shadow-brutal w-full max-w-md rounded">
         {/* Titlebar */}
         <div className="bg-gradient-to-r from-blue-900 to-blue-600 text-white px-3 py-1.5 flex items-center justify-between font-bold text-xs">
           <span>TypeSafe Jev 模型接口设置</span>
