@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>问问Jev (Ask Jev) - 专治纠结的生活微决策老管家</title>
   <style>
     /* 全局复古 Web 1.0 样式 */
@@ -694,26 +694,211 @@
       z-index: 9999;
     }
 
-    /* 响应式调整 */
-    @media (max-width: 768px) {
+    /* 移动端深度优化与响应式增强 */
+    @media (max-width: 640px) {
+      body {
+        font-size: 13px;
+        padding-bottom: calc(20px + env(safe-area-inset-bottom));
+      }
+
+      .top-nav-container {
+        padding-left: 6px;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .top-nav-container::-webkit-scrollbar {
+        display: none;
+      }
+
+      .top-tab {
+        padding: 6px 12px 4px 12px;
+        font-size: 12px;
+      }
+
+      .page-wrapper {
+        margin: 10px auto;
+        padding: 0 10px;
+      }
+
       .header-section {
         grid-template-columns: 1fr;
+        gap: 10px;
         text-align: center;
+        margin-bottom: 8px;
       }
+
       .brand-group {
         justify-content: center;
+        gap: 6px;
       }
-      .headline-group {
-        padding-right: 0;
+
+      .jev-avatar {
+        width: 75px;
+        height: 90px;
       }
+
+      .ask-badge-pill {
+        padding: 8px 16px;
+      }
+      .ask-badge-text {
+        font-size: 24px;
+      }
+      .ask-sub-text {
+        font-size: 20px;
+        margin-left: 18px;
+      }
+
+      .main-question-headline {
+        font-size: 32px;
+      }
+
+      .sub-headline-text {
+        font-size: 16px;
+      }
+
+      .sub-headline-ask {
+        font-size: 28px;
+      }
+
       .interaction-strip {
         grid-template-columns: 1fr;
+        gap: 12px;
       }
+
+      .badge-callout {
+        order: 2;
+        padding-top: 0;
+      }
+
+      .search-console {
+        order: 1;
+      }
+
+      .input-row {
+        gap: 8px;
+      }
+
+      .search-input {
+        font-size: 16px; /* 严格防止 iOS Safari 自动缩放 */
+        padding: 8px 6px;
+      }
+
+      .ask-btn-primary {
+        font-size: 20px;
+        padding: 8px 18px;
+        min-height: 44px;
+      }
+
+      /* 移动端将模式单选升级为拇指友好的分段选择器 */
+      .mode-radios {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+        background: #E8E4BE;
+        padding: 3px;
+        border: 1px solid #B8B080;
+        border-radius: 4px;
+      }
+
+      .mode-radios > span {
+        display: none;
+      }
+
+      .mode-radio-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 12px;
+        padding: 6px 2px;
+        border-radius: 3px;
+        margin: 0;
+        background: transparent;
+      }
+
+      .mode-radio-label input[type="radio"] {
+        display: none;
+      }
+
+      .mode-radio-label.active-mode {
+        background: #CC0000;
+        color: #FFFFFF;
+        font-weight: bold;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      }
+
+      .controls-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+      }
+
+      .aux-links {
+        justify-content: flex-end;
+      }
+
+      .action-links-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        text-align: center;
+      }
+
       .matrix-grid {
         grid-template-columns: 1fr;
+        gap: 14px;
       }
-      .main-question-headline {
-        font-size: 38px;
+
+      .links-subgrid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .links-subgrid li {
+        background: #FFFEEA;
+        border: 1px solid #D8D090;
+        padding: 8px 10px;
+        border-radius: 4px;
+      }
+
+      .verdict-box {
+        padding: 14px;
+      }
+
+      .verdict-badge {
+        font-size: 24px;
+        padding: 4px 12px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .verdict-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .verdict-actions .btn-win98 {
+        min-height: 40px;
+        font-size: 14px;
+        width: 100%;
+      }
+
+      .ad-banner-frame {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+        padding: 10px;
+      }
+
+      .ad-contact-link {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px dashed #CCC;
+        padding-top: 6px;
+        width: 100%;
       }
     }
   </style>
@@ -1343,6 +1528,10 @@
       const context = contextInput.value.trim();
       lastQuery = question;
 
+      // 软键盘收起优化：移动端提交后主动失焦
+      questionInput.blur();
+      if (contextInput) contextInput.blur();
+
       // 视觉状态：置忙
       askBtn.disabled = true;
       askBtn.textContent = "审题中...";
@@ -1489,6 +1678,13 @@
       verdictSpeechText.textContent = data.reasoning;
       verdictEnvelope.classList.add("visible");
       copyNotice.style.display = "none";
+
+      // 移动端体验优化：自动平滑滚动至裁决卡片
+      if (window.innerWidth <= 640) {
+        setTimeout(() => {
+          verdictEnvelope.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }, 100);
+      }
     }
 
     /* --------------------------------------------------------------------------
