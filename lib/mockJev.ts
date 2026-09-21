@@ -141,10 +141,13 @@ export function runMockJevInference(
         };
       }
     }
-    const parts = question.split(/还是|或者|vs|VS|\/|、/);
-    let chosen = "第一项";
+    const parts = question
+      .split(/还是|或者|vs|VS|\/|、/)
+      .map((s) => s.replace(/^[？?！!。，,、\s]+|[？?！!。，,、\s]+$/g, '').trim())
+      .filter(Boolean);
+    let chosen = "更让你踏实的那一项";
     if (parts.length >= 2) {
-      chosen = parts[Math.floor(Math.random() * parts.length)].trim();
+      chosen = parts[Math.floor(Math.random() * parts.length)];
     }
     return {
       mode,

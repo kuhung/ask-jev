@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { DecisionMode } from '@/lib/types';
-import { Sparkles, RotateCcw, ChevronDown, ChevronUp, Lightbulb } from 'lucide-react';
+import { Sparkles, RotateCcw, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface DecisionBoxProps {
   question: string;
@@ -33,13 +33,27 @@ export const DecisionBox: React.FC<DecisionBoxProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const isComposingRef = useRef(false);
 
+  // 当外部注入背景（如灵感抽取）时，自动平滑展开背景输入框，确保决策依据完全可见
+  useEffect(() => {
+    if (context && context.trim().length > 0) {
+      setShowContext(true);
+    }
+  }, [context]);
+
+  // 当检测到对比连词时，自动将模式对齐为 choice，避免答非所问
+  useEffect(() => {
+    if (/还是|或者|vs|VS|\/|、/.test(question) && mode === 'yes_no') {
+      setMode('choice');
+    }
+  }, [question, mode, setMode]);
+
   // 根据当前模式定制输入框提示
   const getPlaceholder = () => {
     switch (mode) {
       case 'yes_no':
         return '例如：6000块的苹果新机现在买不买？或：周六聚餐去不去？';
       case 'choice':
-        return '例如：中午吃骨汤麻辣烫还是轻食沙拉？';
+        return '例如：中午吃骨汤麻辣烫还是轻食沙拉？或：美式 / 拿铁';
       case 'score':
         return '例如：冲动想辞职去摆摊卖手冲咖啡靠谱度打分';
     }
@@ -79,7 +93,7 @@ export const DecisionBox: React.FC<DecisionBoxProps> = ({
           disabled={isLoading}
           className="bg-gradient-to-br from-retroRed-500 via-retroRed-600 to-retroRed-800 text-white font-display text-xl sm:text-2xl px-5 sm:px-8 py-2.5 sm:py-3 rounded-[50%/50%] border-2 border-white outline outline-2 outline-black shadow-brutal hover:brightness-105 active:translate-y-0.5 active:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
         >
-          {isLoading ? '思考中...' : 'Ask!'}
+          {isLoading ? '审题中...' : 'Ask!'}
         </button>
       </div>
 

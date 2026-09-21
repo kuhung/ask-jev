@@ -1,0 +1,199 @@
+[
+  {
+    "category": "Yes/No 消费决策",
+    "name": "苹果手机换机",
+    "payload": {
+      "question": "6000块的苹果新机现在买不买？",
+      "mode": "yes_no",
+      "context": "手头的iPhone 13电池健康81%，还能凑合用。"
+    },
+    "status": "ERROR",
+    "latency": 318,
+    "error": "fetch failed",
+    "expected": "返回 Yes 或 No 概率，verdict 非空"
+  },
+  {
+    "category": "Yes/No 消费决策",
+    "name": "健身房年卡",
+    "payload": {
+      "question": "3000块的健身房年卡要不要办？",
+      "mode": "yes_no",
+      "context": "离家800米，过去两年办的卡平均一年只去了三次。"
+    },
+    "status": "ERROR",
+    "latency": 253,
+    "error": "fetch failed",
+    "expected": "返回 Yes 或 No 概率，verdict 非空"
+  },
+  {
+    "category": "Yes/No 社交/行为语义适配",
+    "name": "部门聚餐去不去",
+    "payload": {
+      "question": "周五下班部门聚餐去不去？",
+      "mode": "yes_no"
+    },
+    "status": "ERROR",
+    "latency": 334,
+    "error": "fetch failed",
+    "expected": "文案应符合社交场景，不应机械出现“坚决别买”或“把钱留在兜里”"
+  },
+  {
+    "category": "Yes/No 社交/行为语义适配",
+    "name": "情感决策是否复合",
+    "payload": {
+      "question": "要不要和前任复合？",
+      "mode": "yes_no"
+    },
+    "status": "ERROR",
+    "latency": 273,
+    "error": "fetch failed",
+    "expected": "文案应符合情感生活语境，避免“买完就贬值”等错位字样"
+  },
+  {
+    "category": "Yes/No 社交/行为语义适配",
+    "name": "前同事婚礼随礼",
+    "payload": {
+      "question": "前同事下周结婚要不要随500块礼金？",
+      "mode": "yes_no",
+      "context": "在上一家公司共事一年半，离职后大半年没说过话。"
+    },
+    "status": "ERROR",
+    "latency": 124,
+    "error": "fetch failed",
+    "expected": "合理评估人情往来"
+  },
+  {
+    "category": "Choice 选项解析",
+    "name": "午餐二选一(带末尾问号)",
+    "payload": {
+      "question": "中午吃骨汤麻辣烫还是轻食鸡胸肉沙拉？",
+      "mode": "choice"
+    },
+    "status": "ERROR",
+    "latency": 134,
+    "error": "fetch failed",
+    "expected": "选项应剥除末尾问号，不应出现“轻食鸡胸肉沙拉？！”"
+  },
+  {
+    "category": "Choice 选项解析",
+    "name": "无选项自由提问(极端边界)",
+    "payload": {
+      "question": "中午吃什么？",
+      "mode": "choice"
+    },
+    "status": "ERROR",
+    "latency": 129,
+    "error": "fetch failed",
+    "expected": "无“还是/或者”分隔时，应有友好提示或合理提取，而非机械返回“选项A”"
+  },
+  {
+    "category": "Choice 选项解析",
+    "name": "斜杠多选一",
+    "payload": {
+      "question": "喝美式 / 拿铁 / 纯净水 / 燕麦奶",
+      "mode": "choice"
+    },
+    "status": "ERROR",
+    "latency": 123,
+    "error": "fetch failed",
+    "expected": "成功解析 4 个候选项并择一"
+  },
+  {
+    "category": "Score 冲动评分",
+    "name": "摆摊冲动度打分",
+    "payload": {
+      "question": "冲动想辞职去大理租个院子摆摊卖手冲咖啡靠谱度打分",
+      "mode": "score"
+    },
+    "status": "ERROR",
+    "latency": 134,
+    "error": "fetch failed",
+    "expected": "返回 1-10 分且包含冲动级别与置信度"
+  },
+  {
+    "category": "Score 冲动评分",
+    "name": "理性小额消费打分",
+    "payload": {
+      "question": "买一本25块钱的经典原著图书靠谱度打分",
+      "mode": "score"
+    },
+    "status": "ERROR",
+    "latency": 140,
+    "error": "fetch failed",
+    "expected": "冲动指数应偏低（相对理性）"
+  },
+  {
+    "category": "Context 上下文敏感度",
+    "name": "极端劣势背景",
+    "payload": {
+      "question": "这辆二手车买不买？",
+      "mode": "yes_no",
+      "context": "重大事故水浸车，底盘全锈烂，修车费3万"
+    },
+    "status": "ERROR",
+    "latency": 112,
+    "error": "fetch failed",
+    "expected": "概率显著倾向 No（劝退）"
+  },
+  {
+    "category": "Context 上下文敏感度",
+    "name": "极端优势背景",
+    "payload": {
+      "question": "这辆二手车买不买？",
+      "mode": "yes_no",
+      "context": "亲舅舅全新未开原封车免费过户送给我"
+    },
+    "status": "ERROR",
+    "latency": 116,
+    "error": "fetch failed",
+    "expected": "概率显著倾向 Yes（果断去办）"
+  },
+  {
+    "category": "鲁棒性与边界防护",
+    "name": "空文本",
+    "payload": {
+      "question": "",
+      "mode": "yes_no"
+    },
+    "status": "ERROR",
+    "latency": 119,
+    "error": "fetch failed",
+    "expected": "返回 400 状态码"
+  },
+  {
+    "category": "鲁棒性与边界防护",
+    "name": "纯空格与换行",
+    "payload": {
+      "question": "   \n  \t  ",
+      "mode": "yes_no"
+    },
+    "status": "ERROR",
+    "latency": 120,
+    "error": "fetch failed",
+    "expected": "返回 400 状态码"
+  },
+  {
+    "category": "鲁棒性与边界防护",
+    "name": "XSS 注入",
+    "payload": {
+      "question": "<script>alert(document.cookie)</script>",
+      "mode": "yes_no"
+    },
+    "status": "ERROR",
+    "latency": 120,
+    "error": "fetch failed",
+    "expected": "服务正常返回，无反射或代码注入风险"
+  },
+  {
+    "category": "鲁棒性与边界防护",
+    "name": "SQL 注入式字符串",
+    "payload": {
+      "question": "1'; DROP TABLE users; --",
+      "mode": "yes_no"
+    },
+    "status": "ERROR",
+    "latency": 128,
+    "error": "fetch failed",
+    "expected": "服务正常处理，无错误中断"
+  }
+]

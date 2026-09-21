@@ -1632,11 +1632,14 @@
             };
           }
         }
-        // 从“还是”或者“或者”切分选项
-        const parts = question.split(/还是|或者|vs|VS|\/|、/);
-        let chosen = "第一项";
+        // 从“还是”或者“或者”切分选项并清洗首尾标点
+        const parts = question
+          .split(/还是|或者|vs|VS|\/|、/)
+          .map(function(s) { return s.replace(/^[？?！!。，,、\s]+|[？?！!。，,、\s]+$/g, '').trim(); })
+          .filter(Boolean);
+        let chosen = "更让你踏实的那一项";
         if (parts.length >= 2) {
-          chosen = parts[Math.floor(Math.random() * parts.length)].trim();
+          chosen = parts[Math.floor(Math.random() * parts.length)];
         }
         return {
           verdict: `首选：${chosen}！`,

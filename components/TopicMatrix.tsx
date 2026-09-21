@@ -53,13 +53,19 @@ interface TopicMatrixProps {
   onSelectTopic: (q: string, mode: DecisionMode) => void;
   onOpenDoc: () => void;
   onOpenAbout: () => void;
+  onToast?: (msg: string) => void;
 }
 
 export const TopicMatrix: React.FC<TopicMatrixProps> = ({
   onSelectTopic,
   onOpenDoc,
   onOpenAbout,
+  onToast,
 }) => {
+  const notify = (msg: string) => {
+    if (onToast) onToast(msg);
+  };
+
   return (
     <div className="w-full bg-cream-200 border-2 border-black shadow-brutal p-4 sm:p-5 rounded-md mt-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -116,8 +122,8 @@ export const TopicMatrix: React.FC<TopicMatrixProps> = ({
               <button
                 type="button"
                 onClick={() =>
-                  alert(
-                    '【赛博硬币决断法】：当你在两件事之间犹豫不决时，抛硬币的关键不在于落下来的那一面，而在于抛在空中的瞬间，你心里已经知道了答案。问问Jev帮你把内心的声音直接放大！'
+                  notify(
+                    '【赛博硬币决断法】：在两件事之间犹豫时，关键不是落下的那一面，而是抛向空中的瞬间你心里已经有了倾向。Jev 帮你把内心的声音直接放大！'
                   )
                 }
                 className="underline hover:text-retroRed-600 text-left"
@@ -129,8 +135,8 @@ export const TopicMatrix: React.FC<TopicMatrixProps> = ({
               <button
                 type="button"
                 onClick={() =>
-                  alert(
-                    '【管家箴言】：\n1. 能用几十块钱解决的问题，不要消耗几小时情绪。\n2. 想做的事情不会犹豫，犹豫的事情大概率不值得做。\n3. 买前冷静七天，立省百分之百。'
+                  notify(
+                    '【管家箴言】：1. 能用几十块钱解决的问题不要消耗情绪；2. 真正想做的事不会犹豫，犹豫的大多不值得；3. 买前冷静七天，立省百分百。'
                   )
                 }
                 className="underline hover:text-retroRed-600 text-left"

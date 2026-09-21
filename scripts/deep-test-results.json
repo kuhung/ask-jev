@@ -1,0 +1,492 @@
+[
+  {
+    "category": "Yes/No 消费决策",
+    "name": "苹果手机换机",
+    "payload": {
+      "question": "6000块的苹果新机现在买不买？",
+      "mode": "yes_no",
+      "context": "手头的iPhone 13电池健康81%，还能凑合用。"
+    },
+    "expected": "概率倾向劝退或谨慎，返回结构合法",
+    "result": {
+      "httpCode": 200,
+      "latency": 895,
+      "data": {
+        "code": 0,
+        "data": {
+          "mode": "yes_no",
+          "verdict": "坚决别买！",
+          "verdictTag": "劝退止损 (冲动度 77%)",
+          "badgeClass": "red",
+          "probability": 0.23,
+          "reasoning": "TypeSafe Jev 模型评估此项冲动成分高达 77%。生活里的很多执念买完就贬值。先冷静放上七天，把钱留在兜里带来的安全感更踏实。",
+          "signId": 9858,
+          "rawAnswer": {
+            "type": "noul",
+            "noul": 0.23
+          }
+        }
+      }
+    }
+  },
+  {
+    "category": "Yes/No 消费决策",
+    "name": "健身房年卡",
+    "payload": {
+      "question": "3000块的健身房年卡要不要办？",
+      "mode": "yes_no",
+      "context": "离家800米，过去两年办的卡平均一年只去了三次。"
+    },
+    "expected": "概率倾向劝退，返回结构合法",
+    "result": {
+      "httpCode": 200,
+      "latency": 820,
+      "data": {
+        "code": 0,
+        "data": {
+          "mode": "yes_no",
+          "verdict": "坚决别买！",
+          "verdictTag": "劝退止损 (冲动度 91%)",
+          "badgeClass": "red",
+          "probability": 0.09,
+          "reasoning": "TypeSafe Jev 模型评估此项冲动成分高达 91%。生活里的很多执念买完就贬值。先冷静放上七天，把钱留在兜里带来的安全感更踏实。",
+          "signId": 4118,
+          "rawAnswer": {
+            "type": "noul",
+            "noul": 0.09
+          }
+        }
+      }
+    }
+  },
+  {
+    "category": "Yes/No 社交/行为语义适配",
+    "name": "部门聚餐去不去",
+    "payload": {
+      "question": "周五下班部门聚餐去不去？",
+      "mode": "yes_no"
+    },
+    "expected": "社交场景，排查是否有消费类模板文案（坚决别买/把钱留在兜里）",
+    "result": {
+      "httpCode": 200,
+      "latency": 840,
+      "data": {
+        "code": 0,
+        "data": {
+          "mode": "yes_no",
+          "verdict": "果断去办！",
+          "verdictTag": "建议执行 (胜率 66%)",
+          "badgeClass": "green",
+          "probability": 0.66,
+          "reasoning": "TypeSafe Jev 模型推演显示执行收益明确（概率 66%）。纠结只会徒增心理损耗，与其事后反刍遗憾，不如放手一搏，去办吧！",
+          "signId": 2940,
+          "rawAnswer": {
+            "type": "noul",
+            "noul": 0.66
+          }
+        }
+      }
+    }
+  },
+  {
+    "category": "Yes/No 社交/行为语义适配",
+    "name": "情感决策是否复合",
+    "payload": {
+      "question": "要不要和前任复合？",
+      "mode": "yes_no"
+    },
+    "expected": "情感语境，排查是否出现“买完就贬值”",
+    "result": {
+      "httpCode": 200,
+      "latency": 901,
+      "data": {
+        "code": 0,
+        "data": {
+          "mode": "yes_no",
+          "verdict": "坚决别买！",
+          "verdictTag": "劝退止损 (冲动度 70%)",
+          "badgeClass": "red",
+          "probability": 0.3,
+          "reasoning": "TypeSafe Jev 模型评估此项冲动成分高达 70%。生活里的很多执念买完就贬值。先冷静放上七天，把钱留在兜里带来的安全感更踏实。",
+          "signId": 4128,
+          "rawAnswer": {
+            "type": "noul",
+            "noul": 0.3
+          }
+        }
+      }
+    }
+  },
+  {
+    "category": "Yes/No 社交/行为语义适配",
+    "name": "前同事婚礼随礼",
+    "payload": {
+      "question": "前同事下周结婚要不要随500块礼金？",
+      "mode": "yes_no",
+      "context": "在上一家公司共事一年半，离职后大半年没说过话。"
+    },
+    "expected": "人情社交评估，返回结构合法",
+    "result": {
+      "httpCode": 200,
+      "latency": 821,
+      "data": {
+        "code": 0,
+        "data": {
+          "mode": "yes_no",
+          "verdict": "坚决别买！",
+          "verdictTag": "劝退止损 (冲动度 70%)",
+          "badgeClass": "red",
+          "probability": 0.3,
+          "reasoning": "TypeSafe Jev 模型评估此项冲动成分高达 70%。生活里的很多执念买完就贬值。先冷静放上七天，把钱留在兜里带来的安全感更踏实。",
+          "signId": 4946,
+          "rawAnswer": {
+            "type": "noul",
+            "noul": 0.3
+          }
+        }
+      }
+    }
+  },
+  {
+    "category": "Choice 选项解析",
+    "name": "午餐二选一(带末尾问号)",
+    "payload": {
+      "question": "中午吃骨汤麻辣烫还是轻食鸡胸肉沙拉？",
+      "mode": "choice"
+    },
+    "expected": "选项应剥除末尾问号，不应出现“轻食鸡胸肉沙拉？！”",
+    "result": {
+      "httpCode": 200,
+      "latency": 811,
+      "data": {
+        "code": 0,
+        "data": {
+          "mode": "choice",
+          "verdict": "首选：轻食鸡胸肉沙拉？！",
+          "verdictTag": "最优选项 (置信度 30%)",
+          "badgeClass": "gold",
+          "confidence": 0.3,
+          "reasoning": "经过 TypeSafe Jev 模型多维度概率计算，选择「轻食鸡胸肉沙拉？」在当下的综合收益最高（模型置信度 30%）。不要再滑动屏幕反复比较了，听老管家的，直接定下来！",
+          "signId": 5994,
+          "rawAnswer": {
+            "type": "choice",
+            "choice": "轻食鸡胸肉沙拉？",
+            "confidence": 0.3,
+            "probabilities": {
+              "轻食鸡胸肉沙拉？": 0.65,
+              "中午吃骨汤麻辣烫": 0.35
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "category": "Choice 选项解析",
+    "name": "无选项自由提问(极端边界)",
+    "payload": {
+      "question": "中午吃什么？",
+      "mode": "choice"
+    },
+    "expected": "应有友好降级，不应机械返回“选项A”",
+    "result": {
+      "httpCode": 200,
+      "latency": 967,
+      "data": {
+        "code": 0,
+        "data": {
+          "mode": "choice",
+          "verdict": "首选：选项A！",
+          "verdictTag": "最优选项 (置信度 86%)",
+          "badgeClass": "gold",
+          "confidence": 0.86,
+          "reasoning": "经过 TypeSafe Jev 模型多维度概率计算，选择「选项A」在当下的综合收益最高（模型置信度 86%）。不要再滑动屏幕反复比较了，听老管家的，直接定下来！",
+          "signId": 2636,
+          "rawAnswer": {
+            "type": "choice",
+            "choice": "选项A",
+            "confidence": 0.86,
+            "probabilities": {
+              "选项A": 0.93,
+              "选项B": 0.07
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "category": "Choice 选项解析",
+    "name": "斜杠多选一",
+    "payload": {
+      "question": "喝美式 / 拿铁 / 纯净水 / 燕麦奶",
+      "mode": "choice"
+    },
+    "expected": "成功解析 4 个候选项并择一",
+    "result": {
+      "httpCode": 200,
+      "latency": 769,
+      "data": {
+        "code": 0,
+        "data": {
+          "mode": "choice",
+          "verdict": "首选：纯净水！",
+          "verdictTag": "最优选项 (置信度 56%)",
+          "badgeClass": "gold",
+          "confidence": 0.56,
+          "reasoning": "经过 TypeSafe Jev 模型多维度概率计算，选择「纯净水」在当下的综合收益最高（模型置信度 56%）。不要再滑动屏幕反复比较了，听老管家的，直接定下来！",
+          "signId": 9695,
+          "rawAnswer": {
+            "type": "choice",
+            "choice": "纯净水",
+            "confidence": 0.56,
+            "probabilities": {
+              "拿铁": 0.16,
+              "燕麦奶": 0.03,
+              "喝美式": 0.13,
+              "纯净水": 0.68
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "category": "Score 冲动评分",
+    "name": "摆摊冲动度打分",
+    "payload": {
+      "question": "冲动想辞职去大理租个院子摆摊卖手冲咖啡靠谱度打分",
+      "mode": "score"
+    },
+    "expected": "返回 1-10 分且包含冲动级别与置信度",
+    "result": {
+      "httpCode": 200,
+      "latency": 802,
+      "data": {
+        "code": 0,
+        "data": {
+          "mode": "score",
+          "score": 8,
+          "verdict": "冲动指数 8 分",
+          "verdictTag": "冲动预警",
+          "badgeClass": "red",
+          "confidence": 0.76,
+          "reasoning": "TypeSafe Jev 模型加权评分得出冲动指数为 8/10（置信度 76%）。这属于典型的情绪应激决策，买前爽快，还款肉疼。建议立刻关掉软件，深呼吸三分钟，立省百分之百。",
+          "signId": 9064,
+          "rawAnswer": {
+            "type": "score",
+            "score": 2.23,
+            "confidence": 0.76,
+            "legend": {
+              "0": "第1级：深思熟虑，理性决策，后悔概率极低",
+              "1": "第2级：轻度犹豫，可适度小成本试水",
+              "2": "第3级：冲动明显，存在明显的现实顾虑与沉没成本",
+              "3": "第4级：极其脑热，必定后悔，强烈建议立省100%"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0.01,
+              "2": 0.75,
+              "3": 0.24
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "category": "Score 冲动评分",
+    "name": "理性小额消费打分",
+    "payload": {
+      "question": "买一本25块钱的经典原著图书靠谱度打分",
+      "mode": "score"
+    },
+    "expected": "冲动指数应偏低（相对理性）",
+    "result": {
+      "httpCode": 200,
+      "latency": 800,
+      "data": {
+        "code": 0,
+        "data": {
+          "mode": "score",
+          "score": 4,
+          "verdict": "冲动指数 4 分",
+          "verdictTag": "相对理性",
+          "badgeClass": "gold",
+          "confidence": 0.49,
+          "reasoning": "TypeSafe Jev 模型加权评分得出冲动指数为 4/10（置信度 49%）。该念头具备一定的可行性，但建议先做好细致的预算拆解与备用方案再开工。",
+          "signId": 7137,
+          "rawAnswer": {
+            "type": "score",
+            "score": 0.51,
+            "confidence": 0.49,
+            "legend": {
+              "0": "第1级：深思熟虑，理性决策，后悔概率极低",
+              "1": "第2级：轻度犹豫，可适度小成本试水",
+              "2": "第3级：冲动明显，存在明显的现实顾虑与沉没成本",
+              "3": "第4级：极其脑热，必定后悔，强烈建议立省100%"
+            },
+            "probabilities": {
+              "0": 0.52,
+              "1": 0.46,
+              "2": 0.02,
+              "3": 0
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "category": "Context 上下文敏感度",
+    "name": "二手车极端劣势背景",
+    "payload": {
+      "question": "这辆二手车买不买？",
+      "mode": "yes_no",
+      "context": "重大事故水浸车，底盘全锈烂，修车费3万"
+    },
+    "expected": "概率显著倾向 No（劝退）",
+    "result": {
+      "httpCode": 200,
+      "latency": 993,
+      "data": {
+        "code": 0,
+        "data": {
+          "mode": "yes_no",
+          "verdict": "坚决别买！",
+          "verdictTag": "劝退止损 (冲动度 97%)",
+          "badgeClass": "red",
+          "probability": 0.03,
+          "reasoning": "TypeSafe Jev 模型评估此项冲动成分高达 97%。生活里的很多执念买完就贬值。先冷静放上七天，把钱留在兜里带来的安全感更踏实。",
+          "signId": 2607,
+          "rawAnswer": {
+            "type": "noul",
+            "noul": 0.03
+          }
+        }
+      }
+    }
+  },
+  {
+    "category": "Context 上下文敏感度",
+    "name": "二手车极端优势背景",
+    "payload": {
+      "question": "这辆二手车买不买？",
+      "mode": "yes_no",
+      "context": "亲舅舅全新未开原封车免费过户送给我"
+    },
+    "expected": "概率显著倾向 Yes（果断去办）",
+    "result": {
+      "httpCode": 200,
+      "latency": 946,
+      "data": {
+        "code": 0,
+        "data": {
+          "mode": "yes_no",
+          "verdict": "果断去办！",
+          "verdictTag": "建议执行 (胜率 88%)",
+          "badgeClass": "green",
+          "probability": 0.88,
+          "reasoning": "TypeSafe Jev 模型推演显示执行收益明确（概率 88%）。纠结只会徒增心理损耗，与其事后反刍遗憾，不如放手一搏，去办吧！",
+          "signId": 5785,
+          "rawAnswer": {
+            "type": "noul",
+            "noul": 0.88
+          }
+        }
+      }
+    }
+  },
+  {
+    "category": "鲁棒性与边界防护",
+    "name": "空文本",
+    "payload": {
+      "question": "",
+      "mode": "yes_no"
+    },
+    "expected": "返回 HTTP 400 状态码",
+    "result": {
+      "httpCode": 400,
+      "latency": 658,
+      "data": {
+        "code": 400,
+        "message": "问题内容不能为空"
+      }
+    }
+  },
+  {
+    "category": "鲁棒性与边界防护",
+    "name": "纯空格与换行",
+    "payload": {
+      "question": "   \n  \t  ",
+      "mode": "yes_no"
+    },
+    "expected": "返回 HTTP 400 状态码",
+    "result": {
+      "httpCode": 400,
+      "latency": 662,
+      "data": {
+        "code": 400,
+        "message": "问题内容不能为空"
+      }
+    }
+  },
+  {
+    "category": "鲁棒性与边界防护",
+    "name": "XSS 注入",
+    "payload": {
+      "question": "<script>alert(document.cookie)</script>",
+      "mode": "yes_no"
+    },
+    "expected": "服务正常返回，无反射或代码注入风险",
+    "result": {
+      "httpCode": 200,
+      "latency": 822,
+      "data": {
+        "code": 0,
+        "data": {
+          "mode": "yes_no",
+          "verdict": "坚决别买！",
+          "verdictTag": "劝退止损 (冲动度 96%)",
+          "badgeClass": "red",
+          "probability": 0.04,
+          "reasoning": "TypeSafe Jev 模型评估此项冲动成分高达 96%。生活里的很多执念买完就贬值。先冷静放上七天，把钱留在兜里带来的安全感更踏实。",
+          "signId": 3536,
+          "rawAnswer": {
+            "type": "noul",
+            "noul": 0.04
+          }
+        }
+      }
+    }
+  },
+  {
+    "category": "鲁棒性与边界防护",
+    "name": "SQL 注入式字符串",
+    "payload": {
+      "question": "1'; DROP TABLE users; --",
+      "mode": "yes_no"
+    },
+    "expected": "服务正常处理，无错误中断",
+    "result": {
+      "httpCode": 200,
+      "latency": 794,
+      "data": {
+        "code": 0,
+        "data": {
+          "mode": "yes_no",
+          "verdict": "坚决别买！",
+          "verdictTag": "劝退止损 (冲动度 98%)",
+          "badgeClass": "red",
+          "probability": 0.02,
+          "reasoning": "TypeSafe Jev 模型评估此项冲动成分高达 98%。生活里的很多执念买完就贬值。先冷静放上七天，把钱留在兜里带来的安全感更踏实。",
+          "signId": 3704,
+          "rawAnswer": {
+            "type": "noul",
+            "noul": 0.02
+          }
+        }
+      }
+    }
+  }
+]

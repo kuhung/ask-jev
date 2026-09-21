@@ -9,7 +9,7 @@ import { TopicMatrix } from '@/components/TopicMatrix';
 import { ApiSettingsModal } from '@/components/ApiSettingsModal';
 import { DecisionMode, JevDecisionData, JevDecisionResponse } from '@/lib/types';
 import { INSPIRATION_ITEMS } from '@/lib/mockJev';
-import { Star } from 'lucide-react';
+import { Star, Bell } from 'lucide-react';
 
 export default function Home() {
   const [question, setQuestion] = useState('');
@@ -19,26 +19,50 @@ export default function Home() {
   const [verdictData, setVerdictData] = useState<JevDecisionData | null>(null);
   const [lastQuestion, setLastQuestion] = useState('');
   const [isApiModalOpen, setIsApiModalOpen] = useState(false);
+  const [toastMsg, setToastMsg] = useState<string | null>(null);
+  const toastTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const verdictRef = useRef<HTMLDivElement>(null);
 
+  // 显示复古 Toast 浮层
+  const showToast = (msg: string) => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    setToastMsg(msg);
+    toastTimerRef.current = setTimeout(() => {
+      setToastMsg(null);
+    }, 3200);
+  };
+
   // 执行裁决
-  const handleAsk = async () => {
+  const handleAsk = async (isReroll = false) => {
     const q = question.trim();
     if (!q) {
-      alert('请先输入你想让 Jev 裁决的纠结问题！');
+      showToast('请先输入你想让 Jev 裁决的纠结问题！');
       return;
+    }
+
+    if (isReroll && q === lastQuestion && verdictData) {
+      showToast('老管家重新把关也是同一结论，听劝才能少走弯路！');
     }
 
     setIsLoading(true);
     setLastQuestion(q);
     setVerdictData(null);
 
+    // 从 localStorage 读取用户自定义配置
+    const customKey = typeof window !== 'undefined' ? localStorage.getItem('ask_jev_api_key') : null;
+    const customEndpoint = typeof window !== 'undefined' ? localStorage.getItem('ask_jev_api_endpoint') : null;
+
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+    if (customKey?.trim()) headers['x-typesafe-key'] = customKey.trim();
+    if (customEndpoint?.trim()) headers['x-typesafe-endpoint'] = customEndpoint.trim();
+
     try {
-      // 优先请求本地 Next.js API 路由 (该路由会代理远程 TypeSafe Jev 或执行内置推演)
       const res = await fetch('/api/jev', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ question: q, mode, context: context.trim() }),
       });
 
@@ -55,7 +79,6 @@ export default function Home() {
       setVerdictData(fallback);
     } finally {
       setIsLoading(false);
-      // 移动端平滑定位到结果卡片
       setTimeout(() => {
         verdictRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }, 100);
@@ -68,6 +91,7 @@ export default function Home() {
     setQuestion(pick.q);
     setContext(pick.context);
     setMode(pick.mode);
+    showToast(`已抽取纠结场景：「${pick.q.slice(0, 14)}...」`);
   };
 
   // 重置
@@ -75,20 +99,27 @@ export default function Home() {
     setQuestion('');
     setContext('');
     setVerdictData(null);
+    showToast('已清空重置，请敲入新的纠结事项');
   };
 
   // 场景词条选择
   const handleSelectTopic = (q: string, m: DecisionMode) => {
     setQuestion(q);
     setMode(m);
-    // 自动触发一次裁决
     setIsLoading(true);
     setLastQuestion(q);
     setVerdictData(null);
 
+    const customKey = typeof window !== 'undefined' ? localStorage.getItem('ask_jev_api_key') : null;
+    const customEndpoint = typeof window !== 'undefined' ? localStorage.getItem('ask_jev_api_endpoint') : null;
+
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (customKey?.trim()) headers['x-typesafe-key'] = customKey.trim();
+    if (customEndpoint?.trim()) headers['x-typesafe-endpoint'] = customEndpoint.trim();
+
     fetch('/api/jev', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({ question: q, mode: m }),
     })
       .then((r) => r.json())
@@ -103,40 +134,55 @@ export default function Home() {
 
   return (
     <div className="w-full min-h-screen">
-      {/* 顶部复古横向导航栏 (移动端支持平滑横滑) */}
-      <header className="bg-retroWin-tab border-b-2 border-[#5A5A6E] px-2 sm:px-4 pt-1 flex items-center gap-1 overflow-x-auto whitespace-nowrap scrollbar-none shadow-sm">
-        <button
-          type="button"
-          onClick={handleReset}
-          className="bg-retroWin-tabActive text-black font-bold text-xs sm:text-sm px-3 sm:px-4 py-1.5 border-t-2 border-l-2 border-white border-r-2 border-black rounded-t"
-        >
-          首页
-        </button>
-        <button
-          type="button"
-          onClick={handleInspiration}
-          className="bg-retroWin-tabInactive hover:bg-[#63638E] text-white font-bold text-xs sm:text-sm px-3 sm:px-4 py-1.5 border-t border-l border-[#777799] border-r border-black rounded-t transition-colors"
-        >
-          随便抛个硬币！
-        </button>
-        <button
-          type="button"
-          onClick={() => setIsApiModalOpen(true)}
-          className="bg-retroWin-tabInactive hover:bg-[#63638E] text-white font-bold text-xs sm:text-sm px-3 sm:px-4 py-1.5 border-t border-l border-[#777799] border-r border-black rounded-t transition-colors"
-        >
-          TypeSafe 接口设置
-        </button>
-        <button
-          type="button"
-          onClick={() =>
-            alert(
-              '【关于 Jev 老管家】：\nJev 致敬了 90 年代经典 Ask Jeeves。在这个信息严重过载、每个人都在买不买与吃什么之间内耗的时代，Jev 专治各种无意义纠结。\n后端由 TypeSafe Jev 专有模型强力驱动，直接给出确定性硬核决断！'
-            )
-          }
-          className="bg-retroWin-tabInactive hover:bg-[#63638E] text-white font-bold text-xs sm:text-sm px-3 sm:px-4 py-1.5 border-t border-l border-[#777799] border-r border-black rounded-t transition-colors"
-        >
-          关于 Jev 管家
-        </button>
+      {/* 全局 Neo-Brutalism Toast 浮层 */}
+      {toastMsg && (
+        <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 animate-fadeIn max-w-[92vw]">
+          <div className="bg-cream-100 border-2 border-black shadow-brutal px-4 py-2 rounded flex items-center gap-2 text-xs sm:text-sm font-bold text-black">
+            <Bell size={14} className="text-retroRed-600 animate-bounce" />
+            <span>{toastMsg}</span>
+          </div>
+        </div>
+      )}
+
+      {/* 统一 Neo-Brutalism 顶部导航栏 */}
+      <header className="bg-cream-200 border-b-2 border-black px-2 sm:px-6 pt-2 pb-1.5 flex items-center justify-between gap-2 overflow-x-auto whitespace-nowrap scrollbar-none shadow-sm">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <button
+            type="button"
+            onClick={handleReset}
+            className="bg-retroRed-600 text-white font-bold text-xs sm:text-sm px-3 sm:px-4 py-1.5 border-2 border-black rounded shadow-brutal-sm active:translate-y-0.5 active:shadow-none transition-all"
+          >
+            首页
+          </button>
+          <button
+            type="button"
+            onClick={handleInspiration}
+            className="bg-white hover:bg-cream-100 text-black font-bold text-xs sm:text-sm px-3 sm:px-4 py-1.5 border-2 border-black rounded shadow-brutal-sm active:translate-y-0.5 active:shadow-none transition-all"
+          >
+            随便抛个硬币！
+          </button>
+        </div>
+
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <button
+            type="button"
+            onClick={() => setIsApiModalOpen(true)}
+            className="bg-cream-50 hover:bg-white text-black font-bold text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 border-2 border-black rounded shadow-brutal-sm active:translate-y-0.5 active:shadow-none transition-all"
+          >
+            TypeSafe 接口设置
+          </button>
+          <button
+            type="button"
+            onClick={() =>
+              showToast(
+                'Jev 致敬了 90 年代经典 Ask Jeeves。在这个选择过载的时代，专治买不买与吃什么，直截了当给出决断！'
+              )
+            }
+            className="bg-cream-50 hover:bg-white text-black font-bold text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 border-2 border-black rounded shadow-brutal-sm active:translate-y-0.5 active:shadow-none transition-all"
+          >
+            关于管家
+          </button>
+        </div>
       </header>
 
       {/* 主页面容器 */}
@@ -189,7 +235,7 @@ export default function Home() {
               setMode={setMode}
               context={context}
               setContext={setContext}
-              onAsk={handleAsk}
+              onAsk={() => handleAsk(false)}
               onInspiration={handleInspiration}
               onReset={handleReset}
               isLoading={isLoading}
@@ -201,7 +247,8 @@ export default function Home() {
                 <VerdictCard
                   question={lastQuestion}
                   data={verdictData}
-                  onReroll={handleAsk}
+                  onReroll={() => handleAsk(true)}
+                  onToast={showToast}
                 />
               )}
             </div>
@@ -213,10 +260,11 @@ export default function Home() {
           onSelectTopic={handleSelectTopic}
           onOpenDoc={() => setIsApiModalOpen(true)}
           onOpenAbout={() =>
-            alert(
-              '【关于 Jev 老管家】：\nJev 致敬了 90 年代经典 Ask Jeeves。专为中国年轻人高频生活抉择打造，直截了当，拒绝太极！'
+            showToast(
+              'Jev 致敬了 90 年代经典 Ask Jeeves。专为年轻人的高频生活抉择打造，直截了当，拒绝太极！'
             )
           }
+          onToast={showToast}
         />
 
         {/* 底部复古 468x60 招租横幅广告条 */}
@@ -225,7 +273,7 @@ export default function Home() {
             <Star className="text-retroRed-600 fill-retroRed-600 animate-pulse" size={24} />
             <div>
               <div
-                onClick={() => alert('感谢关注！欢迎向朋友安利【问问Jev】生活微决策决断机！')}
+                onClick={() => showToast('欢迎向朋友分享【问问Jev】生活微决策决断机！')}
                 className="font-display text-lg sm:text-xl text-blue-900 underline cursor-pointer"
               >
                 ADVERTISE HERE! 广告位招租！
@@ -237,7 +285,7 @@ export default function Home() {
           </div>
           <button
             type="button"
-            onClick={() => alert('商务联系：请联系 Jev 管家团队！')}
+            onClick={() => showToast('商务合作请联系 Jev 管家团队！')}
             className="text-xs font-bold text-blue-900 underline sm:border-l sm:border-gray-300 sm:pl-4 whitespace-nowrap"
           >
             联系管家 &raquo;

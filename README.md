@@ -74,7 +74,14 @@ ask-jev/
 │   ├── mockJev.ts                # 本地高拟真推演引擎与高频题库
 │   └── types.ts                  # 全链路 TypeScript 严格类型契约
 ├── docs/
-│   └── PRD.md                    # 需求架构方案与移动端规范
+│   ├── PRD.md                    # 需求架构方案与移动端规范
+│   ├── reviews/
+│   │   └── UX_AND_EXPRESSION_REVIEW.md # 表达体系、交互连贯性与表现形式深度审查
+│   └── test-reports/
+│       └── PROD_TEST_REPORT.md   # 生产环境详尽用例测试与评估报告
+├── scripts/
+│   ├── run-production-tests.mjs  # 生产环境自动化测试套件
+│   └── run-deep-tests-curl.mjs   # 生产环境深度场景与边界探测脚本
 ├── index.html                    # 零依赖单页版 (同步支持移动端)
 ├── package.json                  # Next.js 15 生产级配置
 ├── tailwind.config.ts            # 主题与 Neo-Brutalism 样式配置
