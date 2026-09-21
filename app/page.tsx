@@ -9,7 +9,7 @@ import { TopicMatrix } from '@/components/TopicMatrix';
 import { ApiSettingsModal } from '@/components/ApiSettingsModal';
 import { DecisionMode, JevDecisionData, JevDecisionResponse } from '@/lib/types';
 import { INSPIRATION_ITEMS } from '@/lib/mockJev';
-import { Star, Bell, Github } from 'lucide-react';
+import { Star, Bell } from 'lucide-react';
 
 export default function Home() {
   const [question, setQuestion] = useState('');
@@ -168,9 +168,9 @@ export default function Home() {
             href="https://github.com/kuhung/ask-jev"
             target="_blank"
             rel="noreferrer"
-            className="bg-cream-50 hover:bg-white text-black font-bold text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 border-2 border-black rounded shadow-brutal-sm active:translate-y-0.5 active:shadow-none transition-all inline-flex items-center gap-1"
+            className="bg-cream-50 hover:bg-white text-black font-bold text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 border-2 border-black rounded shadow-brutal-sm active:translate-y-0.5 active:shadow-none transition-all inline-flex items-center gap-1.5"
           >
-            <Github size={13} />
+            <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
             <span>GitHub</span>
           </a>
           <button
@@ -215,23 +215,66 @@ export default function Home() {
 
         {/* 中间核心控制区 */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-start">
-          {/* 左侧 NEW 贴纸 */}
-          <aside className="lg:col-span-1 bg-yellow-100 border-2 border-dashed border-amber-600 p-3 rounded shadow-brutal-sm flex items-start gap-2.5">
-            <div className="bg-amber-400 border border-amber-700 text-retroRed-600 font-display text-xs font-bold px-1.5 py-0.5 rounded shadow-sm">
-              NEW!
+          {/* 左侧说明与开源鸣谢卡片 */}
+          <aside className="lg:col-span-1 space-y-3">
+            <div className="bg-yellow-100 border-2 border-dashed border-amber-600 p-3 rounded shadow-brutal-sm flex items-start gap-2.5">
+              <div className="bg-amber-400 border border-amber-700 text-retroRed-600 font-display text-xs font-bold px-1.5 py-0.5 rounded shadow-sm">
+                NEW!
+              </div>
+              <div className="text-xs leading-snug">
+                <span className="font-bold">基于 TypeSafe Jev 模型！</span>
+                <br />
+                结构化极速输出。
+                <br />
+                <button
+                  type="button"
+                  onClick={() => setIsApiModalOpen(true)}
+                  className="text-blue-800 underline font-bold hover:text-red-700"
+                >
+                  查看接口配置 &raquo;
+                </button>
+              </div>
             </div>
-            <div className="text-xs leading-snug">
-              <span className="font-bold">基于 TypeSafe Jev 模型！</span>
-              <br />
-              结构化极速输出。
-              <br />
-              <button
-                type="button"
-                onClick={() => setIsApiModalOpen(true)}
-                className="text-blue-800 underline font-bold hover:text-red-700"
-              >
-                查看接口配置 &raquo;
-              </button>
+
+            {/* 开源仓库、开发者与致敬鸣谢立牌 */}
+            <div className="bg-cream-50 border-2 border-black p-3 rounded shadow-brutal-sm text-xs space-y-2">
+              <div className="font-bold text-black border-b border-black pb-1 flex items-center justify-between">
+                <span>项目档案与鸣谢</span>
+                <span className="text-[10px] bg-amber-200 border border-black px-1 rounded font-bold">开源</span>
+              </div>
+              <div>
+                <a
+                  href="https://github.com/kuhung/ask-jev"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-bold text-black hover:text-retroRed-600 underline flex items-center gap-1"
+                >
+                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                  <span>开源代码仓库 (GitHub)</span>
+                </a>
+              </div>
+              <div className="text-gray-700">
+                开发者：
+                <a
+                  href="https://kuhung.me"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-bold text-blue-900 hover:text-retroRed-600 underline ml-0.5"
+                >
+                  kuhung.me
+                </a>
+              </div>
+              <div className="text-gray-700">
+                特别致敬：
+                <a
+                  href="https://askjev.net"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-bold text-blue-900 hover:text-retroRed-600 underline ml-0.5"
+                >
+                  askjev.net
+                </a>
+              </div>
             </div>
           </aside>
 
@@ -309,7 +352,7 @@ export default function Home() {
               rel="noreferrer"
               className="inline-flex items-center gap-1.5 font-bold text-black hover:text-retroRed-600 underline"
             >
-              <Github size={14} />
+              <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
               <span>开源代码库 (GitHub)</span>
             </a>
             <span className="text-gray-400">|</span>
