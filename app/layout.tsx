@@ -20,6 +20,11 @@ export const metadata: Metadata = {
     description: '面向中国大陆年轻人的复古新野蛮主义微决策神器。专治买不买、花不花、用不用、中午吃什么、去不去。',
     locale: 'zh_CN',
   },
+  verification: {
+    other: {
+      'msvalidate.01': 'D5EBE19EAD6DFA3CA620B6DBE55405CC',
+    },
+  },
 };
 
 const jsonLd = {
