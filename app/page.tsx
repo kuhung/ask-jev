@@ -227,7 +227,7 @@ export default function Home() {
 
           <div className="text-center sm:text-right">
             <h1 className="font-display text-3xl sm:text-5xl text-retroRed-600 tracking-tight leading-none">
-              Have a Question?
+              问问 Jev · 专治纠结
             </h1>
             <p className="font-sans font-bold text-sm sm:text-xl text-black mt-1.5">
               专治日常内耗，直接敲上问题问 <span className="font-display text-retroRed-600 text-2xl sm:text-3xl">Ask!</span>
